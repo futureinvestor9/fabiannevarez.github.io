@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>DTD — Do The Database</title>
+  <link rel="stylesheet" href="dtd-planner.css" />
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <span class="app-header__title">DTD</span>
+    <span class="app-header__subtitle" id="header-subtitle"></span>
+    <button class="app-header__action" id="header-action-btn" data-action="header-action" aria-label="Action"></button>
+  </header>
+
+  <!-- Main App Mount -->
+  <main id="app" class="app-main"></main>
+
+  <!-- Bottom Tab Bar -->
+  <nav class="tab-bar">
+    <button class="tab-btn active" data-tab="dashboard" aria-label="Home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <span>Home</span>
+    </button>
+    <button class="tab-btn" data-tab="thisWeek" aria-label="This Week">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <span>This Week</span>
+    </button>
+    <button class="tab-btn" data-tab="contacts" aria-label="Contacts">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Contacts</span>
+    </button>
+    <button class="tab-btn" data-tab="plans" aria-label="Plans">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg>
+      <span>Plans</span>
+    </button>
+    <button class="tab-btn" data-tab="settings" aria-label="Settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <span>Settings</span>
+    </button>
+  </nav>
+
+  <!-- Modal Overlay -->
+  <div id="modal-overlay" class="modal-overlay hidden" data-action="close-modal"></div>
+
+  <!-- Modal Container -->
+  <div id="modal-container" class="modal-container hidden" role="dialog" aria-modal="true"></div>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Confirm Dialog -->
+  <div id="confirm-overlay" class="modal-overlay hidden"></div>
+  <div id="confirm-dialog" class="confirm-dialog hidden">
+    <p id="confirm-message"></p>
+    <div class="confirm-actions">
+      <button class="btn-secondary" data-action="confirm-cancel">Cancel</button>
+      <button class="btn-danger" data-action="confirm-ok">Delete</button>
+    </div>
+  </div>
+
+  <!-- ① Foundation -->
+  <script src="dtd-constants.js"></script>
+  <script src="dtd-storage.js"></script>
+  <!-- ② Data layer -->
+  <script src="dtd-week.js"></script>
+  <script src="dtd-contacts.js"></script>
+  <script src="dtd-touchpoints.js"></script>
+  <!-- ③ Action layer -->
+  <script src="dtd-builders.js"></script>
+  <script src="dtd-csv.js"></script>
+  <!-- ④ UI layer -->
+  <script src="dtd-modal.js"></script>
+  <script src="dtd-views-core.js"></script>
+  <script src="dtd-views-contacts.js"></script>
+  <script src="dtd-views-misc.js"></script>
+  <!-- ⑤ Entry point — load last -->
+  <script src="dtd-app.js"></script>
+</body>
+</html>
