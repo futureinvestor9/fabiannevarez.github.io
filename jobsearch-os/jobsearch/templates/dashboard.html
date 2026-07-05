@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Job-Search Operating System</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: -apple-system, Segoe UI, Helvetica, Arial, sans-serif; max-width: 960px;
+         margin: 0 auto; padding: 1.5rem; line-height: 1.4; }
+  h1 { font-size: 1.4rem; }
+  h2 { font-size: 1.1rem; margin-top: 2rem; border-bottom: 2px solid #8884; padding-bottom: 0.25rem; }
+  .card { border: 1px solid #8884; border-radius: 8px; padding: 0.75rem 1rem; margin: 0.6rem 0; }
+  .meta { font-size: 0.85rem; opacity: 0.75; }
+  textarea { width: 100%; min-height: 6rem; font-family: inherit; box-sizing: border-box; }
+  form.inline { display: inline; }
+  .actions { margin-top: 0.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  button { cursor: pointer; padding: 0.3rem 0.7rem; border-radius: 6px; border: 1px solid #8886; }
+  .empty { opacity: 0.6; font-style: italic; }
+  .score { font-weight: 600; }
+  .flag { display: inline-block; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 4px;
+          background: #8882; margin-right: 0.25rem; }
+  nav { margin-bottom: 1rem; }
+</style>
+</head>
+<body>
+<nav><a href="{{ url_for('index') }}">Dashboard</a> · <a href="{{ url_for('weekly') }}">Weekly metrics</a></nav>
+<h1>Job-Search Operating System</h1>
+<p class="meta">Daily caps: {{ daily_caps.new_applications_per_day }} applications/day ·
+   {{ daily_caps.new_contacts_per_day }} new contacts/day ·
+   {{ daily_caps.linkedin_connection_requests_per_week }} LinkedIn CRs/week ·
+   {{ daily_caps.emails_per_day }} emails/day</p>
+
+<h2>&#128308; Due Today ({{ due_today|length }})</h2>
+{% for t in due_today %}
+  <div class="card">
+    <div class="meta">Touch {{ t.touch_number }} · {{ t.channel }} · {{ t.contact_name }} @ {{ t.company }} · due {{ t.date_due }}</div>
+    <pre style="white-space: pre-wrap;">{{ t.draft_text }}</pre>
+    <div class="actions">
+      <form class="inline" method="post" action="{{ url_for('mark_sent', touch_id=t.touch_id) }}">
+        <button type="submit">I sent this &rarr; Mark sent</button>
+      </form>
+      <form class="inline" method="post" action="{{ url_for('skip_touch', touch_id=t.touch_id) }}">
+        <button type="submit">Skip</button>
+      </form>
+    </div>
+  </div>
+{% else %}
+  <p class="empty">Nothing due today.</p>
+{% endfor %}
+
+<h2>&#128993; Approval Queue</h2>
+<h3>Cover letters ({{ approval_queue.cover_letters|length }})</h3>
+{% for cl in approval_queue.cover_letters %}
+  <div class="card">
+    <div class="meta">{{ cl.company }} — {{ cl.title }}</div>
+    <form method="post" action="{{ url_for('approve_cover_letter', cover_letter_id=cl.cover_letter_id) }}">
+      <textarea name="body">{{ cl.body }}</textarea>
+      <div class="actions"><button type="submit">Approve</button></div>
+    </form>
+  </div>
+{% else %}
+  <p class="empty">No cover letters awaiting approval.</p>
+{% endfor %}
+
+<h3>Outreach drafts ({{ approval_queue.touches|length }})</h3>
+{% for t in approval_queue.touches %}
+  <div class="card">
+    <div class="meta">Touch {{ t.touch_number }} · {{ t.channel }} · {{ t.contact_name }} @ {{ t.company }} · due {{ t.date_due }}</div>
+    <form method="post" action="{{ url_for('approve_touch', touch_id=t.touch_id) }}">
+      <textarea name="draft_text">{{ t.draft_text }}</textarea>
+      <div class="actions">
+        <button type="submit">Approve</button>
+      </div>
+    </form>
+    <form class="inline" method="post" action="{{ url_for('skip_touch', touch_id=t.touch_id) }}">
+      <button type="submit">Skip</button>
+    </form>
+  </div>
+{% else %}
+  <p class="empty">No outreach drafts awaiting approval.</p>
+{% endfor %}
+
+<h2>&#128994; New Today ({{ new_today|length }})</h2>
+{% for j in new_today %}
+  <div class="card">
+    <strong>{{ j.title }}</strong> @ {{ j.company }}
+    {% if j.total %}<span class="score"> — {{ j.total }} ({{ j.category }})</span>{% endif %}
+  </div>
+{% else %}
+  <p class="empty">No jobs sourced today yet.</p>
+{% endfor %}
+
+<h2>Apply Queue ({{ apply_queue|length }})</h2>
+{% for j in apply_queue %}
+  <div class="card">
+    <strong>{{ j.title }}</strong> @ {{ j.company }} — <span class="score">{{ j.total }} ({{ j.category }})</span>
+    <span class="meta">{{ j.age_days }} day(s) old{% if j.age_days > 3 %} &#9888;&#65039; overdue{% endif %}</span>
+    <div class="actions">
+      <form method="post" action="{{ url_for('mark_applied', job_id=j.job_id) }}">
+        <button type="submit">Mark applied</button>
+      </form>
+      <form method="post" action="{{ url_for('skip_job', job_id=j.job_id) }}">
+        <button type="submit">Skip</button>
+      </form>
+    </div>
+  </div>
+{% else %}
+  <p class="empty">Nothing waiting to be applied to.</p>
+{% endfor %}
+
+<h2>Responses ({{ responses|length }})</h2>
+{% for r in responses %}
+  <div class="card">
+    <div class="meta">{{ r.contact_name }} @ {{ r.company }} — touch {{ r.touch_number }}</div>
+    <div>{{ r.response_summary }}</div>
+  </div>
+{% else %}
+  <p class="empty">No responses logged yet.</p>
+{% endfor %}
+
+<h2>Stale ({{ stale|length }})</h2>
+{% for a in stale %}
+  <div class="card">{{ a.title }} @ {{ a.company }} — {{ a.age_days }} days since applied, no movement.</div>
+{% else %}
+  <p class="empty">Nothing stale.</p>
+{% endfor %}
+
+<h2>Research Timers ({{ research_timers|length }})</h2>
+{% for r in research_timers %}
+  <div class="card">{{ r.title }} @ {{ r.company }} — score {{ r.total }}, {{ r.days_left }} day(s) left to decide.</div>
+{% else %}
+  <p class="empty">No open research-tier decisions.</p>
+{% endfor %}
+
+<h2>Skipped Today ({{ skipped_today|length }})</h2>
+{% for j in skipped_today %}
+  <div class="card">{{ j.title }} @ {{ j.company }} — <span class="meta">{{ j.skip_reason }}</span></div>
+{% else %}
+  <p class="empty">Nothing skipped today.</p>
+{% endfor %}
+
+<h2>Top 5 Open Opportunities</h2>
+{% for j in top_opportunities %}
+  <div class="card">{{ j.title }} @ {{ j.company }} — <span class="score">{{ j.total }} ({{ j.category }})</span></div>
+{% else %}
+  <p class="empty">No open Strong/Tailored opportunities yet.</p>
+{% endfor %}
+
+</body>
+</html>

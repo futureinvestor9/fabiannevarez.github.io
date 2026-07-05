@@ -1,0 +1,127 @@
+# Section A3 — Strongest Proof Points, structured for programmatic selection.
+# tags map each proof point to the scoring dimensions / diagnosis categories
+# (content.py / diagnosis.py / scoring.py) it best supports.
+proof_points:
+  - id: dtd4x
+    title: "DTD4X quarterly CRM cadence system"
+    tags: [crm, process, story_fit]
+    metric: "4 touches/quarter, 16/year"
+    resume_phrasing: >-
+      Designed and operated DTD4X, a quarterly database cadence system (4 touches/quarter
+      across call, text, email, and value-add channels), managing a ~400-lead pipeline in
+      Follow Up Boss with stage tracking, tagging, and Smart Lists.
+    cover_letter_phrasing: >-
+      I built a CRM follow-up operating system from scratch because I watched leads go cold
+      from inconsistent touches — and I designed the cadence, stages, and tracking to fix it.
+    dm_phrasing: >-
+      I've built and run CRM cadence systems (Follow Up Boss, ~400-lead pipeline) and supported
+      Salesforce data quality at JLL Technologies — looking to bring that to a RevOps/CRM ops team.
+
+  - id: pipeline_400
+    title: "~400-lead pipeline managed end-to-end"
+    tags: [crm, revops, story_fit]
+    metric: "~400 leads"
+    resume_phrasing: >-
+      Managed a ~400-lead pipeline end-to-end, from first contact through closing, using
+      Follow Up Boss, REDX, Homebot, and Google Sheets.
+    cover_letter_phrasing: >-
+      Running that system on a ~400-lead pipeline taught me what CRM discipline actually
+      requires: not more software, but clear rules, clean data, and measurement.
+    dm_phrasing: "I've run and managed a ~400-lead pipeline end-to-end, from first contact through close."
+
+  - id: dials_1000
+    title: "~1,000 outbound dials/week"
+    tags: [revops, stakeholder, story_fit]
+    metric: "~1,000 dials/week"
+    resume_phrasing: >-
+      Tracked full-funnel sales activity (dials, contacts, appointments, closings) and channel
+      response rates; used activity data to prioritize lead follow-up.
+    cover_letter_phrasing: >-
+      I've been on both sides of sales operations. As an operator, I made roughly 1,000 outbound
+      dials a week and closed transactions. On the systems side, I built the cadences, stages, and
+      tracking that made that activity measurable.
+    dm_phrasing: "Former high-volume sales operator (~1,000 dials/week) who moved into the ops/data side."
+
+  - id: jll_salesforce
+    title: "Salesforce data quality/governance at JLL Technologies"
+    tags: [crm, data, credibility]
+    metric: "Aug 2022 - Feb 2023"
+    resume_phrasing: >-
+      Supported Salesforce data quality and governance at JLL Technologies: record cleanup, CRM
+      accuracy audits, and operational support to improve reporting reliability.
+    cover_letter_phrasing: >-
+      At JLL Technologies, my job was the unglamorous foundation of revenue operations: keeping
+      Salesforce data accurate. Record cleanup, governance support, CRM accuracy — the work that
+      determines whether leadership's dashboards are true.
+    dm_phrasing: >-
+      Hands-on Salesforce data quality and governance support at JLL Technologies — not an admin,
+      but I know CRM hygiene work well.
+
+  - id: uber_lyft_project
+    title: "Uber/Lyft operations analysis project"
+    tags: [data, ai, process, story_fit]
+    metric: "75+ trips, $1,946.53 / 59.1 hrs = $32.96/hr baseline"
+    resume_phrasing: >-
+      Built performance baselines and decision thresholds from raw operational data using
+      Excel/Sheets, pivot tables, and structured analysis.
+    cover_letter_phrasing: >-
+      My instinct with any messy process is to baseline it, define rules, and measure against
+      them. Most recently I applied that to my own operational data: I analyzed 75+ data points,
+      validated a $32.96/hour performance baseline across 59.1 tracked hours, and built a
+      three-tier decision framework with explicit per-mile and per-hour thresholds.
+    dm_phrasing: >-
+      I use AI tools to structure messy operational data — and I test the output against real
+      numbers before acting on it.
+
+  - id: three_tier_filter
+    title: "Three-tier trip accept/reject decision filter"
+    tags: [process, data, story_fit]
+    metric: "reject <$1.18/mi or <$27/hr; accept >$2.00/mi and >$35/hr"
+    resume_phrasing: >-
+      Converted informal workflows into documented systems with defined stages, decision rules,
+      and performance thresholds.
+    cover_letter_phrasing: >-
+      My pattern across every role: find the scattered process, give it structure, make it
+      measurable.
+    dm_phrasing: "I build decision rules with explicit thresholds, not gut feel."
+
+  - id: ai_validation
+    title: "AI recommendations cross-validated against real earnings"
+    tags: [ai, story_fit]
+    metric: "cross-checked AI output vs 75+ real trips"
+    resume_phrasing: >-
+      Used AI tools (Claude, ChatGPT) to accelerate operational analysis, then validated
+      recommendations against actual performance data before implementing decision rules.
+    cover_letter_phrasing: >-
+      I use AI tools the way I think companies actually need: as an analysis accelerator with a
+      validation step. When I used Claude and ChatGPT to build trip-acceptance decision rules, I
+      didn't adopt the recommendations until I'd cross-checked them against real earnings data.
+    dm_phrasing: >-
+      I use AI tools to accelerate analysis, then validate output against real data before I trust it.
+
+  - id: negotiation
+    title: "Negotiated purchase ~$250K to $223K"
+    tags: [stakeholder]
+    metric: "~11% reduction, ~$27K saved"
+    resume_phrasing: "Negotiated a residential purchase from ~$250K to $223K; managed client relationships end-to-end from first contact through close."
+    cover_letter_phrasing: >-
+      Years of client-facing work taught me the core BA skill nobody lists honestly: asking
+      questions until the real problem surfaces, then translating a messy situation into clear
+      next steps.
+    dm_phrasing: "I negotiate and manage client relationships end-to-end, from first contact through close."
+
+  - id: tool_stack
+    title: "Follow Up Boss + REDX + Homebot + Sheets stack"
+    tags: [crm, process]
+    metric: "multi-tool workflow integration"
+    resume_phrasing: "Built and maintained a multi-tool operating stack: Follow Up Boss, REDX, Homebot, Google Sheets."
+    cover_letter_phrasing: "CRM discipline isn't software — it's rules, clean data, and measurement. I've built all three."
+    dm_phrasing: "I integrate disconnected tools (CRM, spreadsheets, AI tools) into one working system."
+
+  - id: github_portfolio
+    title: "GitHub portfolio of documented systems projects"
+    tags: [data, process, ai]
+    metric: "github.com/futureinvestor9"
+    resume_phrasing: "Documented operations projects (CRM cadence design, data analysis frameworks) publicly on GitHub."
+    cover_letter_phrasing: "Every project on my GitHub follows the same arc: messy reality, structure, validation, documentation."
+    dm_phrasing: "I document my systems work publicly on GitHub if you'd like to see the process, not just the resume line."
