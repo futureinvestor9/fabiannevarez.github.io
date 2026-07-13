@@ -15,6 +15,8 @@ from jobsearch import pipeline
 from jobsearch.db import get_db
 from jobsearch.metrics import compute_weekly_metrics
 from jobsearch.config import STORY_BANK
+from jobsearch.intake import load_intake_file
+from jobsearch.digest import build_digest
 
 
 def cmd_init_db(args):
@@ -33,17 +35,13 @@ def cmd_intake(args):
     print(f"Ingested job_id={job_id}: {args.title} @ {args.company}")
 
 
-def cmd_process(args):
-    conn = get_db()
-    if args.job_id:
-        job_ids = [args.job_id]
-    else:
+def _process_new_jobs(conn, job_ids=None, verbose=True):
+    if job_ids is None:
         job_ids = [r["job_id"] for r in conn.execute("SELECT job_id FROM jobs WHERE status='new'").fetchall()]
-    if not job_ids:
-        print("No new jobs to process.")
-        return
     for job_id in job_ids:
         result = pipeline.process_job(conn, job_id)
+        if not verbose:
+            continue
         job = pipeline.get_job(conn, job_id)
         print(f"\n=== job_id={job_id}: {job['title']} @ {job['company']} ===")
         print(f"Score: {result['score'].total} ({result['score'].category})"
@@ -55,9 +53,51 @@ def cmd_process(args):
         if result["cover_letter"]:
             print(f"Cover letter drafted (cover_letter_id={result['cover_letter']['cover_letter_id']}), "
                   f"{result['cover_letter']['word_count']} words — awaiting approval.")
-            print("Research checklist:")
-            for line in pipeline.research_checklist_for_job(conn, job_id):
-                print(f"  - {line}")
+    return job_ids
+
+
+def cmd_process(args):
+    conn = get_db()
+    job_ids = [args.job_id] if args.job_id else None
+    if job_ids is None and not conn.execute("SELECT 1 FROM jobs WHERE status='new' LIMIT 1").fetchone():
+        print("No new jobs to process.")
+        return
+    _process_new_jobs(conn, job_ids)
+
+
+def cmd_intake_batch(args):
+    conn = get_db()
+    rows = load_intake_file(args.file)
+    result = pipeline.ingest_batch(conn, rows, source=args.source or "batch")
+    print(f"Ingested {len(result['ingested'])} new posting(s): job_ids {result['ingested']}")
+    if result["duplicates"]:
+        print(f"Skipped {len(result['duplicates'])} duplicate(s) (same company+title within 30 days):")
+        for d in result["duplicates"]:
+            print(f"  - row {d['row']}: {d['title']} @ {d['company']} (already job_id={d['existing_job_id']})")
+    if result["malformed"]:
+        print(f"Flagged {len(result['malformed'])} malformed row(s) for manual review:")
+        for m in result["malformed"]:
+            print(f"  - row {m['row']}: {m['reason']}")
+
+
+def cmd_queue(args):
+    conn = get_db()
+    print(build_digest(conn))
+
+
+def cmd_run(args):
+    """One-shot morning agent run: batch-intake (optional) -> process all new -> print queue."""
+    conn = get_db()
+    if args.file:
+        rows = load_intake_file(args.file)
+        result = pipeline.ingest_batch(conn, rows, source="batch")
+        print(f"Ingested {len(result['ingested'])} new, skipped {len(result['duplicates'])} dup, "
+              f"{len(result['malformed'])} malformed.")
+    n_new = conn.execute("SELECT COUNT(*) FROM jobs WHERE status='new'").fetchone()[0]
+    if n_new:
+        _process_new_jobs(conn, verbose=False)
+        print(f"Processed {n_new} new posting(s).\n")
+    print(build_digest(conn))
 
 
 def cmd_add_contact(args):
@@ -157,9 +197,23 @@ def build_parser() -> argparse.ArgumentParser:
     sp.add_argument("--source", default="manual")
     sp.set_defaults(func=cmd_intake)
 
+    sp = sub.add_parser("intake-batch",
+                        help="Ingest MANY postings at once from a .csv or .md/.txt file.")
+    sp.add_argument("file", help="Path to intake.csv (columns: company,title,jd_text,url,location,comp) "
+                                  "or a markdown/text file with '## Company | Title' headers.")
+    sp.add_argument("--source", default="batch")
+    sp.set_defaults(func=cmd_intake_batch)
+
     sp = sub.add_parser("process", help="Diagnose + score (+ route) new jobs.")
     sp.add_argument("--job-id", type=int, dest="job_id", help="Process one job; omit to process all status='new'.")
     sp.set_defaults(func=cmd_process)
+
+    sp = sub.add_parser("queue", help="Print the morning queue: everything prepared and waiting on you.")
+    sp.set_defaults(func=cmd_queue)
+
+    sp = sub.add_parser("run", help="One-shot morning run: [batch-intake] -> process all new -> print queue.")
+    sp.add_argument("--file", help="Optional intake file to batch-ingest first.")
+    sp.set_defaults(func=cmd_run)
 
     sp = sub.add_parser("add-contact", help="Add a contact + generate 4 touch drafts.")
     sp.add_argument("--job-id", type=int, required=True, dest="job_id")

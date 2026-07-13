@@ -42,6 +42,45 @@ def ingest_job(
     return cur.lastrowid
 
 
+def find_recent_duplicate(conn: sqlite3.Connection, company: str, title: str, within_days: int = 30) -> int | None:
+    """B11 duplicate detection: same company+title within 30 days -> merge
+    (i.e. don't re-ingest). Case-insensitive match; returns the existing
+    job_id if found."""
+    row = conn.execute(
+        "SELECT job_id FROM jobs WHERE lower(company)=lower(?) AND lower(title)=lower(?) "
+        "AND date_found >= date('now', ?) ORDER BY job_id DESC LIMIT 1",
+        (company, title, f"-{within_days} days"),
+    ).fetchone()
+    return row["job_id"] if row else None
+
+
+def ingest_batch(conn: sqlite3.Connection, rows: list[dict], source: str = "batch") -> dict:
+    """Ingest many postings at once. Each row needs at least company, title,
+    jd_text; url/location/comp optional. Skips duplicates per B11 and never
+    guesses a diagnosis on an empty JD (B11 error handling).
+
+    Returns {"ingested": [job_ids], "duplicates": [...], "malformed": [...]}.
+    """
+    result = {"ingested": [], "duplicates": [], "malformed": []}
+    for i, r in enumerate(rows):
+        company = (r.get("company") or "").strip()
+        title = (r.get("title") or "").strip()
+        jd_text = (r.get("jd_text") or "").strip()
+        if not company or not title or len(jd_text) < 30:
+            result["malformed"].append({"row": i + 1, "company": company, "title": title,
+                                         "reason": "missing company/title or JD too short (<30 chars)"})
+            continue
+        dup = find_recent_duplicate(conn, company, title)
+        if dup:
+            result["duplicates"].append({"row": i + 1, "company": company, "title": title, "existing_job_id": dup})
+            continue
+        job_id = ingest_job(conn, company=company, title=title, jd_text=jd_text,
+                            url=(r.get("url") or "").strip(), location=(r.get("location") or "").strip(),
+                            comp_range=(r.get("comp_range") or r.get("comp") or "").strip(), source=source)
+        result["ingested"].append(job_id)
+    return result
+
+
 def _row_to_dict(row: sqlite3.Row) -> dict:
     return {k: row[k] for k in row.keys()}
 

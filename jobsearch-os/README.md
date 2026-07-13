@@ -25,6 +25,30 @@ python -m jobsearch.cli init-db
 This creates `data/jobsearch.db` (SQLite, gitignored — it's your personal
 job-search data, not source code).
 
+## The fast path: one command each morning
+
+If you'd rather run the whole thing as a batch "agent" instead of one job at
+a time: paste every posting you found into an intake file, then run one
+command. See [`intake.example.md`](intake.example.md) for the paste format
+(`## Company | Title | url`, then the JD text under it — as many blocks as
+you want). A `.csv` with `company,title,jd_text,url` columns works too.
+
+```bash
+python -m jobsearch.cli run --file intake.example.md
+```
+
+That single command batch-ingests every posting (skipping duplicates seen
+in the last 30 days), diagnoses + scores each one, drafts a cover letter
+for anything worth applying to, and prints your **morning queue**: a
+ranked, copy-paste-ready list of what to do today. You review each entry,
+click Apply on LinkedIn yourself, paste the letter, and submit. Re-print
+the queue any time with `python -m jobsearch.cli queue`.
+
+This is as close to "apply on my behalf" as the system goes on purpose: the
+agent does all the reading, scoring, and writing; **you** do the login, the
+CAPTCHA, the click, and the send — every time. There is no code path that
+submits an application or sends a message, and a test enforces it.
+
 ## The daily 60-minute loop
 
 1. **Ingest today's postings.** For each job you found:
