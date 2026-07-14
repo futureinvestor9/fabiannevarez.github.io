@@ -1,4 +1,30 @@
+# --- secrets & local state (Invariant 14) ---
+.env
+*.key
+*.pem
+secrets.*
+
+# --- local databases ---
 data/*.db
+db/*.db
+db/*.db-wal
+db/*.db-shm
+
+# --- logs (keep the dirs, ignore contents) ---
+logs/**/*.json
+logs/**/*.log
+!logs/**/.gitkeep
+
+# --- generated/derived, regenerable ---
+approvals/
+artifacts/**
+!artifacts/.gitkeep
+
+# --- python ---
 __pycache__/
 *.pyc
 .pytest_cache/
+.venv/
+*.egg-info/
+build/
+dist/

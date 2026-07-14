@@ -1,0 +1,15 @@
+# Target roles (Section D). Used for reference; scoring role_fit is driven by
+# config/scoring_rules.yaml target_titles.
+target_roles:
+  - Operations Analyst
+  - Business Analyst
+  - Business Systems Analyst
+  - Revenue Operations Analyst
+  - Sales Operations Analyst
+  - CRM Operations Analyst
+  - CRM Data Quality Analyst
+  - Data Analyst
+  - Reporting Analyst
+  - Implementation Analyst
+  - Customer Operations Analyst
+  - Revenue Cycle Analyst

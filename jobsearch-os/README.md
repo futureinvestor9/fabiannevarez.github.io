@@ -1,5 +1,14 @@
 # Job-Search Operating System
 
+> **Two systems live in this directory.** This README documents the original
+> `jobsearch/` **prototype**. The rigorous, approval-gated **v6 system** lives
+> in `jobsearch_os/` and is documented in **[`docs/QUICKSTART_V6.md`](docs/QUICKSTART_V6.md)**
+> (spec: `docs/MASTER_SPEC.md`, safety rules: `docs/INVARIANTS.md`). They
+> coexist deliberately — see `docs/ADR/ADR-0002`. Both refuse to send, submit,
+> connect, or scrape anything.
+
+---
+
 A local, single-user tool that diagnoses a job posting's likely business
 problem before you touch the application, scores it 1–100 against an
 honest skillset, and — for the roles worth pursuing — drafts a cover

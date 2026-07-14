@@ -1,0 +1,102 @@
+# Deterministic scoring config (Section K). A flat config file, not a rules
+# engine. Everything the scorer needs — weights, aliases, mappings, defaults —
+# lives here so scoring is auditable and tunable without code changes.
+
+scoring_version: "2026-07-14.1"
+dedupe_version: "2026-07-14.1"
+dedupe_similarity_threshold: 0.85
+
+# --- component maximums (sum = 100) ---
+components:
+  role_fit: 30
+  requirements_match: 25
+  evidence_strength: 15
+  industry_fit: 10
+  salary_location_fit: 10
+  freshness: 5
+  outreach_potential: 5
+
+decision_bands:
+  - {min: 85, max: 100, label: high,     action: "research and draft"}
+  - {min: 75, max: 84,  label: strong,   action: "draft if capacity remains"}
+  - {min: 65, max: 74,  label: research, action: "research only / strong referral"}
+  - {min: 50, max: 64,  label: hold,     action: "manual promotion required"}
+  - {min: 0,  max: 49,  label: skip,     action: "skip / archive"}
+
+# --- role fit (0-30) ---
+# Exact target titles score full; adjacent titles score partial.
+target_titles:
+  - operations analyst
+  - business analyst
+  - business systems analyst
+  - revenue operations analyst
+  - sales operations analyst
+  - crm operations analyst
+  - crm data quality analyst
+  - data analyst
+  - reporting analyst
+  - implementation analyst
+  - customer operations analyst
+  - revenue cycle analyst
+target_title_aliases:
+  revenue operations analyst: [revops analyst, rev ops analyst]
+  sales operations analyst: [sales ops analyst]
+  crm operations analyst: [crm analyst, crm ops analyst]
+adjacent_titles:
+  - operations associate
+  - business operations analyst
+  - gtm analyst
+  - go-to-market analyst
+  - marketing operations analyst
+  - data operations analyst
+role_fit_points:
+  exact_target: 30
+  alias_target: 28
+  adjacent: 18
+  none: 6
+
+# --- requirements match (0-25) ---
+# Skills the candidate can support (deterministically) and their aliases.
+supported_skills:
+  crm: [salesforce, follow up boss, hubspot, crm]
+  data_quality: [data hygiene, data quality, data governance, crm accuracy]
+  reporting: [excel, google sheets, pivot table, dashboard, reporting, xlookup]
+  process: [process improvement, process mapping, sop, workflow, documentation]
+  pipeline: [pipeline, funnel, lead routing, follow-up, cadence]
+  sql_basic: [sql]
+# Requirements that need proficiency the candidate does NOT have -> missing.
+overreach_skills: [tableau, power bi, looker, python, etl, data warehouse, snowflake]
+requirements_points:
+  per_supported_hit: 4
+  max_supported: 25
+  overreach_penalty_each: 0     # overreach just fails to earn points; no negative
+
+# --- evidence strength (0-15) ---
+evidence_points:
+  direct: 15
+  reasonable_inference: 8
+  unsupported: 0
+
+# --- industry fit (0-10) ---
+industry_accessible: [saas, b2b, real estate, proptech, services, technology, startup]
+industry_deep_domain: [clinical, actuarial, biotech, pharmaceutical, aerospace, semiconductor]
+industry_points: {accessible: 10, neutral: 6, deep_domain: 2}
+
+# --- salary / location fit (0-10) ---
+salary_location:
+  unknown_salary_points: 5      # neutral, NOT zero (mandated default)
+  chicago_or_remote_bonus: 5
+  base_points: 5
+
+# --- freshness (0-5) ---
+freshness_brackets:
+  - {max_age_days: 7, points: 5}
+  - {max_age_days: 21, points: 4}
+  - {max_age_days: 45, points: 2}
+  - {max_age_days: 99999, points: 1}
+missing_posted_date_points: 3   # neutral default when no date
+
+# --- outreach potential (0-5) ---
+outreach:
+  with_contact_points: 5
+  no_contact_points: 0          # mandated: no contact info -> zero

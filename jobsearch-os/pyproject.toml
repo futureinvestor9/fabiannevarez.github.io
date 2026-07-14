@@ -1,0 +1,25 @@
+[project]
+name = "jobsearch-os"
+version = "0.1.0"
+description = "Local-first, resumable, approval-gated job-search operating system (v6)."
+requires-python = ">=3.10"
+dependencies = [
+    "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+dashboard = ["streamlit>=1.30"]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+jobsearch-os = "jobsearch_os.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["jobsearch_os"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
