@@ -1,0 +1,12 @@
+{
+  "project": "jobsearch-os",
+  "current_phase": 1,
+  "current_build_item_id": null,
+  "last_completed_build_item_id": "BUILD-160",
+  "last_verified_commit": null,
+  "tests_status": "passing",
+  "phase_1_complete": true,
+  "blocked_reason": null,
+  "next_action": "Phase 1 walking skeleton complete and usable end-to-end. Next: Phase 2 (deferred) per docs/BUILD_PLAN.md — outreach, quality gates, follow-ups, defer, contacts.",
+  "updated_at": "2026-07-14T17:45:00Z"
+}

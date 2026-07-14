@@ -1,0 +1,98 @@
+# Job-Search Operating System — operational config (see spec Section B14).
+# Content (proof points, messaging bank, swaps, cover letter paragraphs,
+# story bank) lives in content/*.yaml. This file holds the numbers, the
+# guardrails, and the identity fields.
+
+candidate:
+  name: "Fabian"
+  location: "Chicago"
+  github: "futureinvestor9"
+  fallback_email: "armaninevarez9@gmail.com"
+
+# --- B4 scoring weights ------------------------------------------------
+# NOTE ON THE SOURCE SPEC: Section B4 lists 12 dimension weights and claims
+# "weights sum to 10, so max = 100" but the 12 listed weights actually sum
+# to 11.0 (1.2+1.1+1.0+1.0+0.9+0.8+0.7+1.0+0.9+0.6+0.9+0.9). The worked
+# example in B12 is consistent with normalizing by the *actual* weight sum
+# (raw weighted sum 97.7 / 11.0 * 10 = 88.8, vs. the doc's stated total of
+# 88) rather than assuming the weights sum to exactly 10. scoring.py
+# normalizes by the real sum of weights so the scale is always 0-100
+# regardless of how the weights below are edited.
+scoring:
+  weights:
+    d1_crm_ops: 1.2
+    d2_revenue_sales_ops: 1.1
+    d3_workflow_process: 1.0
+    d4_data_quality_reporting: 1.0
+    d5_business_analysis: 0.9
+    d6_stakeholder_communication: 0.8
+    d7_ai_systems_thinking: 0.7
+    d8_experience_level_accessibility: 1.0
+    d9_technical_requirements_accessibility: 0.9
+    d10_industry_accessibility: 0.6
+    d11_credible_positioning_likelihood: 0.9
+    d12_story_fit: 0.9
+  categories:
+    strong:   { min: 80, max: 100 }
+    tailored: { min: 65, max: 79.999 }
+    research: { min: 50, max: 64.999 }
+    skip:     { min: 0,  max: 49.999 }
+  research_decision_window_days: 7
+
+# --- B6 outreach sequencing --------------------------------------------
+outreach:
+  touch_offsets_days: [0, 3, 9, 16]        # standard 4-touch sequence
+  recruiter_touch_offsets_days: [0, 4, 10]  # compressed 3-touch sequence
+  max_active_sequences_per_company: 2
+  stale_after_days: 10
+
+# --- B13 daily caps ------------------------------------------------------
+daily_caps:
+  new_applications_per_day: 5
+  new_contacts_per_day: 10
+  linkedin_connection_requests_per_week: 15
+  emails_per_day: 10
+
+# --- A11 banned language (validator blocklist for GENERATED text only) --
+# Matched case-insensitively as literal substrings against cover letters
+# and outreach drafts before they are allowed into the approval queue.
+# This does NOT apply to inbound job-description text, which is scanned
+# separately by diagnosis.py for flags like ADMIN_CERT_REQUIRED.
+banned_phrases:
+  # Hard no — sounds fake or will get exposed in an interview
+  - "AI expert"
+  - "AI specialist"
+  - "Salesforce Administrator"
+  - "data scientist"
+  - "data engineer"
+  - "automation engineer"
+  - "built automations at scale"
+  - "RevOps leader"
+  - "led revenue operations"
+  - "proficient in SQL"
+  - "proficient in Python"
+  - "Power BI experience"
+  - "transformed business operations"
+  - "drove revenue growth"
+  - "managed cross-functional teams"
+  - "enterprise systems implementation experience"
+  # Soft no — too vague, wastes space
+  - "results-driven professional"
+  - "passionate about data"
+  - "detail-oriented team player"
+  - "proven track record"
+  - "leveraged synergies"
+  - "wore many hats"
+  - "self-starter"
+  - "thought leader"
+  # Structural red flags
+  - "I am writing to apply"
+  - "I believe I would be a great fit"
+
+# Risky framings (A11) are contextual, not literal strings, so they are not
+# auto-blocked — they're surfaced as reminders in language_to_avoid instead.
+risky_framings:
+  - "Hiding the rideshare period or calling it a sabbatical instead of owning it as an ops project."
+  - "Calling DTD4X software or a platform instead of an operating system/process."
+  - "Implying JLL Technologies was longer or more senior than it actually was (Aug 2022 - Feb 2023, support-level scope)."
+  - "Listing every real estate sales achievement instead of only the ops-relevant ones."

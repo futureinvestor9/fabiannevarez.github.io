@@ -1,0 +1,59 @@
+# Section A8 (value paragraphs) + A10 (no-BS statement) + opening-sentence
+# rotation templates used by coverletter.py to keep every letter's first
+# sentence unique (per B7 hard rule).
+
+value_paragraphs:
+  crm: >-
+    Inconsistent follow-up quietly kills pipelines, I've watched it happen and I built the fix.
+    My DTD4X system structures four full database touches per quarter across call, text, email,
+    and value-add channels, with stages, tags, and response tracking in the CRM. Running that
+    system on a ~400-lead pipeline taught me what CRM discipline actually requires: not more
+    software, but clear rules, clean data, and measurement.
+  credibility: >-
+    At JLL Technologies, my job was the unglamorous foundation of revenue operations: keeping
+    Salesforce data accurate. Record cleanup, governance support, CRM accuracy, the work that
+    determines whether leadership's dashboards are true. I learned there that reporting problems
+    are usually data-quality problems in disguise, and I've cared about the data layer ever since.
+  data: >-
+    My instinct with any messy process is to baseline it, define rules, and measure against them.
+    Most recently I applied that to my own operational data: I analyzed 75+ data points, validated
+    a $32.96/hour performance baseline across 59.1 tracked hours, and built a three-tier decision
+    framework with explicit per-mile and per-hour thresholds. The domain was rideshare; the method,
+    baseline, rules, validation, transfers to any operations team.
+  ai: >-
+    I use AI tools the way I think companies actually need: as an analysis accelerator with a
+    validation step. When I used Claude and ChatGPT to build trip-acceptance decision rules, I
+    didn't adopt the recommendations until I'd cross-checked them against real earnings data. That
+    habit, AI-assisted, evidence-validated, is how I approach every workflow I touch.
+  revops: >-
+    I've been on both sides of sales operations. As an operator, I made roughly 1,000 outbound
+    dials a week and closed transactions. On the systems side, I built the cadences, stages, and
+    tracking that made that activity measurable. That dual perspective means I design processes
+    reps will actually follow, because I know exactly which fields go unfilled and why.
+  stakeholder: >-
+    Years of client-facing work taught me the core BA skill nobody lists honestly: asking
+    questions until the real problem surfaces, then translating a messy situation into clear next
+    steps. Whether negotiating a purchase from $250K down to $223K or walking a client through
+    tradeoffs, I've practiced turning ambiguity into decisions, in plain language stakeholders trust.
+  process: >-
+    My pattern across every role is the same: find the scattered process, give it structure, and
+    make it measurable. I've converted informal, tribal-knowledge workflows into documented systems
+    with defined stages, decision rules, and performance thresholds that someone else could pick up
+    and run.
+
+no_bs_statement: >-
+  I'm not a 10-year enterprise analyst. My edge is that I've worked close to the reps, the CRM, and
+  the messy data underneath the reports, and I turn that mess into documented, measurable systems.
+
+closing_ask: >-
+  I'd welcome a conversation about {ask_topic} at {company}.
+
+# {problem} is filled with the diagnosis.likely_struggle text (paraphrased,
+# short). Rotated per-company so no two letters open identically (B7 hard rule).
+opening_templates:
+  - "Postings like your {title} role usually mean the same thing: {problem}"
+  - "Job descriptions like this one tend to say the same quiet thing between the lines: {problem}"
+  - "When a company posts a {title} role like this, it's usually because {problem}"
+  - "Reading between the lines of this {title} posting: {problem}"
+  - "Roles like {title} at growing teams tend to open for one reason: {problem}"
+  - "The honest read on a posting like this one is simple: {problem}"

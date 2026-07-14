@@ -1,0 +1,91 @@
+# Section A14 (STAR story bank) + A15 interview story mapping.
+# Reference data only, surfaced via `python -m jobsearch.cli interview-prep`.
+# Not used by scoring/diagnosis/generation — this is prep material for the
+# human, not something to inject into outbound copy.
+stories:
+  - id: dtd4x
+    title: "DTD4X CRM Follow-Up System"
+    situation: "Managing a ~400-lead real estate pipeline where follow-up was inconsistent and leads were going cold."
+    task: "Create a follow-up process that was repeatable, measurable, and simple enough to sustain at volume."
+    action: >-
+      Designed DTD4X, 4 full database touches per quarter (16/year) across call, text, email/social,
+      and a value-add touch. Built it into Follow Up Boss with stages, tags, and Smart Lists; tracked
+      cadence completion and response rate by channel; used channel data to adjust the mix.
+    result: "Inconsistent, memory-based follow-up became a scheduled operating process with completion tracking."
+    proves: ["Process design", "CRM discipline", "systems thinking", "KPI definition"]
+    best_for: ["CRM Analyst", "RevOps", "Sales Ops", "BA"]
+
+  - id: uber_lyft
+    title: "Uber/Lyft Operations Intelligence Project"
+    situation: "Full-time independent driving with no objective way to know which trips were worth accepting."
+    task: "Build a data-backed decision framework for accept/reject calls in real time."
+    action: >-
+      Logged and analyzed 75+ trips; established a validated baseline ($1,946.53 over 59.1 online
+      hours = $32.96/hr gross); used AI tools plus Mystro/Gridwise data to draft decision rules;
+      cross-validated AI recommendations against actual earnings before adopting them; finalized a
+      three-tier filter.
+    result: "A documented, repeatable decision system replacing gut-feel, published as a GitHub portfolio project."
+    proves: ["Analytical rigor", "decision-rule design", "responsible AI use", "baseline methodology"]
+    best_for: ["Operations Analyst", "BA", "BSA"]
+
+  - id: jll_salesforce
+    title: "Salesforce Data Quality at JLL Technologies"
+    situation: "CRM records with accuracy and consistency issues undermining reporting reliability."
+    task: "Support data quality, governance, and CRM accuracy as part of the operations function."
+    action: "Performed record cleanup and accuracy checks, followed governance standards, supported the operational processes that kept Salesforce data trustworthy."
+    result: "Cleaner, more reliable CRM data supporting business reporting."
+    proves: ["Data hygiene", "governance awareness", "attention to detail", "enterprise-tool exposure"]
+    best_for: ["CRM Analyst", "RevOps", "BSA"]
+
+  - id: pipeline_ownership
+    title: "Real Estate Pipeline Management"
+    situation: "Solo operator responsible for the entire revenue engine: lead gen, CRM, follow-up, appointments, closings."
+    task: "Keep a ~400-lead pipeline moving without a team or manager enforcing process."
+    action: "Built the full stack myself, Follow Up Boss + REDX + Homebot + Google Sheets, with lead-source tracking, stages, tags, and appointment tracking."
+    result: "Closed buyer/seller transactions and rental leases off a self-managed pipeline."
+    proves: ["End-to-end pipeline ownership", "multi-tool integration", "self-directed process discipline"]
+    best_for: ["Sales Ops", "RevOps", "CRM Ops"]
+
+  - id: outbound_calling
+    title: "High-Volume Outbound Calling"
+    situation: "Prospecting-heavy real estate model requiring sustained outbound activity."
+    task: "Generate appointments from cold and warm outreach at volume."
+    action: "Sustained ~1,000 dials/week using REDX; tracked contact rates, outcomes, and follow-up stages; refined scripts based on objection patterns."
+    result: "Consistent appointment flow and closed transactions; deep firsthand understanding of the activity metrics sales ops teams track."
+    proves: ["Discipline", "activity-to-outcome thinking", "empathy for reps"]
+    best_for: ["Sales Ops"]
+
+  - id: negotiation
+    title: "$250K to $223K Negotiation"
+    situation: "Client purchasing a property listed around $250K."
+    task: "Secure the best achievable terms."
+    action: "Prepared with comparable data, identified leverage points, sequenced the negotiation, communicated tradeoffs to the client clearly at each step."
+    result: "Closed at ~$223K, roughly $27K (~11%) of client value."
+    proves: ["Preparation", "stakeholder communication", "influence without authority"]
+    best_for: ["Any client-facing analyst role"]
+
+  - id: ai_workflow
+    title: "Using AI to Improve an Operational Workflow"
+    situation: "Needed to analyze messy, multi-source operational data faster than manual review allowed."
+    task: "Use AI tools to accelerate the analysis without blindly trusting output."
+    action: "Structured the data, prompted Claude/ChatGPT for pattern analysis and threshold recommendations, then designed a validation step comparing every AI recommendation against actual earnings outcomes."
+    result: "Analysis that would have taken weeks manually, compressed, with only validated rules making it into production use."
+    proves: ["Practical AI fluency", "skepticism/validation discipline"]
+    best_for: ["Any role"]
+
+  - id: structure_from_mess
+    title: "Turning Messy Information into a Structured Process"
+    situation: "Scattered information across tools, notes, and memory with no single operating picture."
+    task: "Create structure that made the work repeatable and measurable."
+    action: "Inventoried the information sources, defined the stages/categories that mattered, built the tracking structure, documented the rules, and iterated based on what the measurements showed."
+    result: "A system with defined inputs, rules, and outputs, documented well enough for someone else to run."
+    proves: ["The core analyst skill: imposing useful structure on ambiguity"]
+    best_for: ["BA/BSA interviews"]
+
+question_type_mapping:
+  process_or_systems: dtd4x
+  data_or_decision: uber_lyft
+  detail_or_accuracy: jll_salesforce
+  influence_or_stakeholder: negotiation
+  ai: ai_workflow
+  understand_sales: outbound_calling

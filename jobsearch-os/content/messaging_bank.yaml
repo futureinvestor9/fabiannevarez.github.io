@@ -1,0 +1,59 @@
+# Section A13 — Job-Search Messaging Bank, keyed by category. Used by
+# diagnosis.py to build value_prop text and by contacts.py for touch drafts.
+categories:
+  crm:
+    label: "CRM operations"
+    lines:
+      - "I designed DTD4X, a quarterly cadence system: 4 full database touches per quarter, 16 per year, across call/text/email/value-add channels."
+      - "I managed a ~400-lead pipeline in Follow Up Boss with stages, tags, Smart Lists, and response tracking by channel."
+      - "CRM discipline isn't software — it's rules, clean data, and measurement. I've built all three."
+
+  revops:
+    label: "Revenue operations"
+    lines:
+      - "I connect activity to outcomes: dials, contacts, appointments, closings, tracked by source and channel."
+      - "I've seen how pipeline leakage actually happens and built the cadence system that prevents it."
+      - "My RevOps foundation is data quality: reports are only as trustworthy as the CRM records underneath them."
+
+  process:
+    label: "Business analysis / process improvement"
+    lines:
+      - "My pattern in every role: find the scattered process, define stages and rules, document it, measure it."
+      - "I ask questions until the real problem surfaces, then translate the mess into clear next steps."
+      - "I've converted informal, tribal-knowledge workflows into systems someone else could run tomorrow."
+      - "Give me a messy process and I'll hand back a documented, measurable system."
+      - "I built a three-tier decision filter with explicit thresholds: reject below $1.18/mi or $27/hr, accept above $2.00/mi and $35/hr."
+
+  data:
+    label: "Data reporting"
+    lines:
+      - "I build reporting that answers a decision, every metric I track feeds a rule or an action."
+      - "Excel and Google Sheets are my primary tools: pivot tables, XLOOKUP, dashboards, funnel tracking."
+      - "I established a validated performance baseline, $32.96/hour gross across 59.1 tracked hours, before optimizing anything."
+
+  credibility:
+    label: "Salesforce / data quality"
+    lines:
+      - "At JLL Technologies I supported Salesforce data quality, governance, record cleanup, and CRM accuracy."
+      - "I've done the unglamorous data-hygiene work that makes dashboards reliable."
+
+  ai:
+    label: "AI workflow improvement"
+    lines:
+      - "I use Claude, ChatGPT, and structured prompting to accelerate analysis, then validate output against real data before acting."
+      - "I cross-checked AI trip-value recommendations against 75+ actual trips before adopting the decision rules."
+      - "AI-assisted, evidence-validated, that's my posture with every AI workflow."
+
+  stakeholder:
+    label: "Customer-facing operations"
+    lines:
+      - "I negotiated a purchase from ~$250K to $223K, roughly $27K of client value from preparation and communication."
+      - "Years of client work taught me to explain tradeoffs in plain language and handle objections without friction."
+      - "I've carried the activity targets (~1,000 dials/week) and built the tracking systems, I design processes reps actually follow."
+      - "I know which CRM fields go unfilled and why, because I was the rep not filling them until the process made sense."
+
+  story_fit:
+    label: "Systems thinking"
+    lines:
+      - "I turn day-to-day work into operating systems: baselines, rules, stages, measurement, iteration."
+      - "Every project on my GitHub follows the same arc: messy reality, structure, validation, documentation."

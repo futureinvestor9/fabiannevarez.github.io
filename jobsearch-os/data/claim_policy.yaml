@@ -1,0 +1,42 @@
+# Machine-enforced claim rules (Section C.3). Narrative evidence lives in
+# experience_bank.md; only enforceable rules live here.
+
+prohibited_claims:
+  - id: CLAIM-SALESFORCE-ADMIN
+    patterns: ["Salesforce Administrator", "Salesforce Admin", "SFDC Administrator", "certified Salesforce administrator"]
+    permitted_context_patterns: ["supported Salesforce administrators", "Salesforce data quality"]
+    action: block
+  - id: CLAIM-AI-EXPERT
+    patterns: ["AI expert", "AI specialist"]
+    permitted_context_patterns: ["AI-assisted analysis", "use AI tools"]
+    action: block
+  - id: CLAIM-SQL-PROFICIENT
+    patterns: ["proficient in SQL", "SQL expert", "advanced SQL"]
+    permitted_context_patterns: ["working knowledge of SQL", "basic SQL", "SQL a plus"]
+    action: block
+  - id: CLAIM-PY-PROFICIENT
+    patterns: ["proficient in Python", "Python expert"]
+    permitted_context_patterns: ["Python exposure", "reading and adapting scripts"]
+    action: block
+  - id: CLAIM-DATA-SCIENTIST
+    patterns: ["data scientist", "data engineer", "automation engineer", "RevOps leader"]
+    permitted_context_patterns: []
+    action: block
+
+claim_caps:
+  - id: CAP-SQL-SFDC-PROFICIENCY
+    rule: "SQL and Salesforce proficiency may not exceed levels stated in resume_master.md"
+  - id: CAP-JLL-DURATION
+    rule: "JLL internship duration never appears in headlines or summary lines"
+  - id: CAP-FINANCIAL-CLAIM
+    rule: "The financial performance claim is stated only to its verified endpoint; never extrapolated"
+
+permitted_credentials:
+  - CRED-GOOGLE-DATA-ANALYTICS
+  - CRED-EXCEL-EXPERT
+  - CRED-UIUC-ECON
+
+# GitHub: futureinvestor9 — reference these specifically, never generically.
+portfolio_anchors:
+  - PORT-DTD4X
+  - PORT-UBER-LYFT-OPS

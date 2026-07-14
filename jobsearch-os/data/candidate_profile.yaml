@@ -1,0 +1,31 @@
+# User-confirmed candidate facts (Section C.2). Sensitive answers (Invariant 7)
+# may ONLY come from here. Unknown values are null/unconfirmed and produce a
+# BLOCKED QUESTION at runtime — never a guess. Confirm via:
+#   python -m jobsearch_os.cli confirm-fact --question-id <id> --answer "..."
+
+contact:
+  name: "Fabian"
+  location: "Chicago, IL"
+  github: "futureinvestor9"
+  email: "armaninevarez9@gmail.com"
+
+# Non-sensitive confirmed facts become FACT-* rows on first load.
+confirmed_facts:
+  - id: FACT-LOCATION
+    key: location_preference
+    value: "Chicago area (onsite/hybrid) or remote"
+  - id: FACT-REMOTE
+    key: remote_hybrid_preference
+    value: "open to remote or hybrid"
+
+# Sensitive fields (Invariant 7). null => unknown => blocked question, never inferred.
+sensitive_facts:
+  work_authorization: null        # e.g. "authorized to work in the US, no sponsorship needed"
+  requires_sponsorship: null
+  salary_minimum: null
+  salary_target: null
+  relocation: null
+  commute_radius_miles: null
+  veteran_status: null            # voluntary; leave null unless the user states it
+  disability_status: null         # voluntary
+  criminal_history: null

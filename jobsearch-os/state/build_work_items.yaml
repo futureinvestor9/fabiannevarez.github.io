@@ -1,0 +1,107 @@
+# Build work items (BUILD-*). Runtime tasks are TASK-* in SQLite — never mix.
+# status: pending | in_progress | done | deferred | blocked
+
+- id: BUILD-000
+  phase: 0
+  title: Repo audit + preflight + recovery foundation
+  description: Inspect repo/git; preflight JSON; Section E docs; state files; doctor.
+  dependencies: []
+  owner: codex
+  status: done
+  allowed_paths: [docs/, state/, logs/, AGENTS.md, CLAUDE.md]
+  acceptance_tests: ["preflight JSON valid", "doctor runs"]
+  artifacts: [logs/preflight/*.json, docs/INVARIANTS.md, docs/MASTER_SPEC.md]
+
+- id: BUILD-009
+  phase: 0
+  title: doctor + init-db + migrate skeleton
+  description: doctor command reporting environment + artifact repair (report-only).
+  dependencies: [BUILD-000]
+  owner: codex
+  status: done
+  allowed_paths: [jobsearch_os/cli.py, jobsearch_os/doctor.py]
+  acceptance_tests: ["python -m jobsearch_os.cli doctor"]
+
+- id: BUILD-110
+  phase: 1
+  title: Package + config + db + migrations
+  description: config precedence; db pragmas; versioned migrations w/ schema_migrations checksum; core tables.
+  dependencies: [BUILD-009]
+  owner: codex
+  status: done
+  allowed_paths: [jobsearch_os/, db/migrations/, config/]
+  acceptance_tests: ["pytest tests/test_migrations.py tests/test_config.py -q"]
+
+- id: BUILD-120
+  phase: 1
+  title: Ingest / normalize / dedupe / score
+  dependencies: [BUILD-110]
+  owner: codex
+  status: done
+  allowed_paths: [jobsearch_os/, config/scoring_rules.yaml]
+  acceptance_tests: ["pytest tests/test_ingest_dedupe.py tests/test_scoring.py -q"]
+
+- id: BUILD-130
+  phase: 1
+  title: Evidence / claim policy / profile / packet
+  dependencies: [BUILD-120]
+  owner: codex
+  status: done
+  allowed_paths: [jobsearch_os/, data/, config/]
+  acceptance_tests: ["pytest tests/test_evidence.py tests/test_packet.py -q"]
+
+- id: BUILD-140
+  phase: 1
+  title: review_service + state machine + CLI + accept-phase1
+  dependencies: [BUILD-130]
+  owner: codex
+  status: done
+  allowed_paths: [jobsearch_os/, scripts/]
+  acceptance_tests: ["pytest tests/test_review_service.py tests/test_state_machine.py -q"]
+
+- id: BUILD-160
+  phase: 1
+  title: Phase-1-blocking test suite green + accept-phase1 isolated run
+  dependencies: [BUILD-140]
+  owner: codex
+  status: done
+  allowed_paths: [tests/]
+  acceptance_tests: ["pytest tests/ -q", "python -m jobsearch_os.cli accept-phase1"]
+
+# ---- Deferred (recorded, not failed) ----
+- id: BUILD-200
+  phase: 2
+  title: Outreach + quality gates + follow-ups + defer + contacts
+  dependencies: [BUILD-160]
+  owner: codex
+  status: deferred
+- id: BUILD-300
+  phase: 3
+  title: Model router + budgets + research (optional providers)
+  dependencies: [BUILD-200]
+  owner: codex
+  status: deferred
+- id: BUILD-400
+  phase: 4
+  title: Full dashboard (thin wrapper over review_service)
+  status: deferred
+- id: BUILD-500
+  phase: 5
+  title: Replies
+  status: deferred
+- id: BUILD-600
+  phase: 6
+  title: Orchestrator loop + continuity
+  status: deferred
+- id: BUILD-700
+  phase: 7
+  title: Claude Code bridge (only if CLAUDE_CODE_ENABLED=true)
+  status: deferred
+- id: BUILD-800
+  phase: 8
+  title: Handoffs (only if HANDOFFS_ENABLED=true)
+  status: deferred
+- id: BUILD-900
+  phase: 9
+  title: Hardening + release
+  status: deferred

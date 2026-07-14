@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Weekly Metrics — Job-Search Operating System</title>
+<style>
+  body { font-family: -apple-system, Segoe UI, Helvetica, Arial, sans-serif; max-width: 800px;
+         margin: 0 auto; padding: 1.5rem; line-height: 1.4; }
+  h2 { border-bottom: 2px solid #8884; padding-bottom: 0.25rem; }
+  table { border-collapse: collapse; width: 100%; margin-bottom: 1rem; }
+  td, th { text-align: left; padding: 0.25rem 0.5rem; border-bottom: 1px solid #8882; }
+  nav { margin-bottom: 1rem; }
+</style>
+</head>
+<body>
+<nav><a href="{{ url_for('index') }}">Dashboard</a> · <a href="{{ url_for('weekly') }}">Weekly metrics</a></nav>
+<h1>Week of {{ metrics.week_start }}</h1>
+
+<h2>Volume</h2>
+<table>
+<tr><td>Jobs sourced</td><td>{{ metrics.jobs_sourced }}</td></tr>
+<tr><td>Jobs scored</td><td>{{ metrics.jobs_scored }}</td></tr>
+<tr><td>Strong Applies found</td><td>{{ metrics.strong_applies_found }}</td></tr>
+<tr><td>Jobs applied</td><td>{{ metrics.jobs_applied }}</td></tr>
+<tr><td>Cover letters generated</td><td>{{ metrics.cover_letters_generated }}</td></tr>
+<tr><td>Contacts identified</td><td>{{ metrics.contacts_identified }}</td></tr>
+<tr><td>T1s sent</td><td>{{ metrics.t1_sent }}</td></tr>
+<tr><td>Total touches sent</td><td>{{ metrics.total_touches_sent }}</td></tr>
+<tr><td>Emails sent</td><td>{{ metrics.emails_sent }}</td></tr>
+</table>
+
+<h2>Outcomes</h2>
+<table>
+<tr><td>Responses received</td><td>{{ metrics.responses_received }}</td></tr>
+<tr><td>Positive responses</td><td>{{ metrics.positive_responses }}</td></tr>
+<tr><td>Calls booked (all-time)</td><td>{{ metrics.calls_booked }}</td></tr>
+<tr><td>Interviews booked (all-time)</td><td>{{ metrics.interviews_booked }}</td></tr>
+<tr><td>Rejections (all-time)</td><td>{{ metrics.rejections }}</td></tr>
+<tr><td>Ghosts (all-time)</td><td>{{ metrics.ghosts }}</td></tr>
+</table>
+
+<h2>Conversion (cumulative)</h2>
+<table>
+{% for touch_num, rate in metrics.response_rate_by_touch.items() %}
+<tr><td>Response rate — Touch {{ touch_num }}</td><td>{{ rate if rate is not none else 'n/a' }}</td></tr>
+{% endfor %}
+{% for cls, rate in metrics.response_rate_by_class.items() %}
+<tr><td>Response rate — {{ cls }}</td><td>{{ rate if rate is not none else 'n/a' }}</td></tr>
+{% endfor %}
+<tr><td>Application &rarr; interview rate</td><td>{{ metrics.application_to_interview_rate if metrics.application_to_interview_rate is not none else 'n/a' }}</td></tr>
+<tr><td>Strong Apply &rarr; interview rate</td><td>{{ metrics.strong_apply_to_interview_rate if metrics.strong_apply_to_interview_rate is not none else 'n/a' }}</td></tr>
+</table>
+
+<h2>Learning</h2>
+<table>
+{% for t in metrics.best_titles %}
+<tr><td>{{ t.title }}</td><td>{{ t.response_rate }} (n={{ t.n }})</td></tr>
+{% else %}
+<tr><td colspan="2">No title-level data yet.</td></tr>
+{% endfor %}
+</table>
+<p>Best industries: {{ metrics.best_industries }}</p>
+<p>Best template: {{ metrics.best_template if metrics.best_template else 'not enough data yet (need n&ge;5 uses on a non-retired template)' }}</p>
+<p>Avg score for jobs with a response: {{ metrics.avg_score_responded if metrics.avg_score_responded is not none else 'n/a' }}
+   vs. no response: {{ metrics.avg_score_no_response if metrics.avg_score_no_response is not none else 'n/a' }}</p>
+
+<h2>Top skip reasons this week</h2>
+<table>
+{% for s in metrics.top_skip_reasons %}
+<tr><td>{{ s.reason }}</td><td>{{ s.n }}</td></tr>
+{% else %}
+<tr><td colspan="2">Nothing skipped this week.</td></tr>
+{% endfor %}
+</table>
+
+</body>
+</html>
