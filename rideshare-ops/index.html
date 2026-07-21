@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rideshare Operations Intelligence — Fabian Nevarez</title>
+<meta name="description" content="A data-driven trip-acceptance system built from real Uber and Lyft operating data: validated baselines, decision thresholds, and measured results.">
+<style>
+  :root {
+    color-scheme: light;
+    --page:        #f7f7f4;
+    --surface:     #fcfcfb;
+    --ink:         #14161a;
+    --ink-2:       #52514e;
+    --muted:       #898781;
+    --grid:        #e1e0d9;
+    --baseline:    #c3c2b7;
+    --accent:      #2a78d6;
+    --accent-deep: #1c5cab;
+    --accent-soft: #86b6ef;
+    --accent-wash: rgba(42,120,214,0.10);
+    --pre:         #9a988f;
+    --good:        #006300;
+    --ring:        rgba(11,11,11,0.10);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --page:        #0d0d0d;
+      --surface:     #1a1a19;
+      --ink:         #ffffff;
+      --ink-2:       #c3c2b7;
+      --muted:       #898781;
+      --grid:        #2c2c2a;
+      --baseline:    #383835;
+      --accent:      #3987e5;
+      --accent-deep: #86b6ef;
+      --accent-soft: #1c5cab;
+      --accent-wash: rgba(57,135,229,0.14);
+      --pre:         #6f6e67;
+      --good:        #0ca30c;
+      --ring:        rgba(255,255,255,0.10);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page:        #0d0d0d;
+    --surface:     #1a1a19;
+    --ink:         #ffffff;
+    --ink-2:       #c3c2b7;
+    --muted:       #898781;
+    --grid:        #2c2c2a;
+    --baseline:    #383835;
+    --accent:      #3987e5;
+    --accent-deep: #86b6ef;
+    --accent-soft: #1c5cab;
+    --accent-wash: rgba(57,135,229,0.14);
+    --pre:         #6f6e67;
+    --good:        #0ca30c;
+    --ring:        rgba(255,255,255,0.10);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--page);
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 40px 20px 64px; }
+
+  .eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.09em;
+    text-transform: uppercase; color: var(--muted); margin: 0 0 6px;
+  }
+  header.masthead { padding: 8px 0 28px; border-bottom: 1px solid var(--grid); margin-bottom: 32px; }
+  h1 { font-size: clamp(26px, 4.5vw, 36px); line-height: 1.15; margin: 0 0 10px; letter-spacing: -0.015em; text-wrap: balance; }
+  .lede { color: var(--ink-2); max-width: 68ch; margin: 0; }
+  .byline { margin-top: 14px; font-size: 13px; color: var(--muted); }
+  .byline a { color: var(--accent); text-decoration: none; }
+  .byline a:hover, .byline a:focus-visible { text-decoration: underline; }
+
+  section { margin: 40px 0 0; }
+  h2 { font-size: 19px; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .sub { color: var(--ink-2); font-size: 14px; margin: 0 0 16px; max-width: 72ch; }
+
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  .tile {
+    background: var(--surface); border: 1px solid var(--ring); border-radius: 10px;
+    padding: 16px 18px 14px;
+  }
+  .tile .label { font-size: 12.5px; color: var(--ink-2); margin: 0 0 6px; }
+  .tile .value { font-size: 30px; font-weight: 650; line-height: 1.05; letter-spacing: -0.01em; }
+  .tile .value.hero { font-size: 48px; }
+  .tile .unit { font-size: 15px; font-weight: 500; color: var(--ink-2); }
+  .tile .delta { font-size: 12.5px; margin-top: 7px; color: var(--ink-2); }
+  .tile .delta .up { color: var(--good); font-weight: 600; }
+
+  .card {
+    background: var(--surface); border: 1px solid var(--ring); border-radius: 10px;
+    padding: 20px 20px 16px; margin-top: 14px;
+  }
+  .legend { display: flex; gap: 18px; align-items: center; font-size: 13px; color: var(--ink-2); margin: 2px 0 10px; flex-wrap: wrap; }
+  .key { display: inline-flex; align-items: center; gap: 7px; }
+  .swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+  .chart-scroll { overflow-x: auto; }
+  .chart-note { font-size: 12.5px; color: var(--muted); margin: 10px 0 0; }
+  figure { margin: 0; }
+  svg text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+
+  .tooltip {
+    position: fixed; pointer-events: none; z-index: 10; display: none;
+    background: var(--surface); color: var(--ink); border: 1px solid var(--ring);
+    border-radius: 8px; padding: 8px 11px; font-size: 12.5px; line-height: 1.45;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.14); max-width: 240px;
+  }
+  .tooltip .t-title { font-weight: 600; }
+  .tooltip .t-val { font-variant-numeric: tabular-nums; }
+
+  .phases { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 14px; }
+  .phase { background: var(--surface); border: 1px solid var(--ring); border-radius: 10px; padding: 16px 18px; }
+  .phase .when { font-size: 12px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  .phase h3 { margin: 6px 0 6px; font-size: 15.5px; }
+  .phase p { margin: 0; font-size: 13.5px; color: var(--ink-2); }
+
+  details.tableview { margin-top: 10px; font-size: 13px; }
+  details.tableview summary { cursor: pointer; color: var(--accent); }
+  table { border-collapse: collapse; margin-top: 8px; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; padding: 4px 14px 4px 0; border-bottom: 1px solid var(--grid); font-weight: 400; }
+  th { color: var(--muted); font-size: 12px; }
+  td.num, th.num { text-align: right; }
+
+  .method ol { margin: 8px 0 0; padding-left: 20px; }
+  .method li { margin: 0 0 10px; color: var(--ink-2); font-size: 14px; max-width: 78ch; }
+  .method li strong { color: var(--ink); font-weight: 600; }
+
+  footer { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--grid); font-size: 13px; color: var(--muted); display: flex; gap: 18px; flex-wrap: wrap; }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover, footer a:focus-visible { text-decoration: underline; }
+
+  a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .bar { transition: opacity 120ms ease; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Operations portfolio project</p>
+    <h1>Rideshare Operations Intelligence</h1>
+    <p class="lede">
+      I drove full-time for Uber and Lyft with no objective way to know which trips were worth
+      accepting — so I treated my own operation like an analyst would: established a baseline,
+      built decision rules from real trip data, and measured the result. Hourly earnings rose
+      ~35% against the pre-system benchmark, while a per-mile floor cut unpaid wear on the vehicle.
+    </p>
+    <p class="byline">
+      Fabian Nevarez · Chicago · Sep 2025 – Jul 2026 ·
+      <a href="https://github.com/futureinvestor9" rel="noopener">github.com/futureinvestor9</a>
+    </p>
+  </header>
+
+  <section aria-label="Headline results">
+    <div class="kpis">
+      <div class="tile">
+        <p class="label">Validated hourly baseline, with trip filter</p>
+        <div class="value hero">$32.96<span class="unit">/hr</span></div>
+        <p class="delta"><span class="up">▲ 35%</span> vs. $24.42/hr pre-system benchmark</p>
+      </div>
+      <div class="tile">
+        <p class="label">Per-mile accept floor</p>
+        <div class="value">$2.00<span class="unit">/mi</span></div>
+        <p class="delta">vs. $1.81/mi average when accepting unfiltered</p>
+      </div>
+      <div class="tile">
+        <p class="label">Trips logged &amp; analyzed to build the filter</p>
+        <div class="value">75+</div>
+        <p class="delta">$1,946.53 over 59.1 tracked online hours</p>
+      </div>
+      <div class="tile">
+        <p class="label">Trips completed in 2025</p>
+        <div class="value">1,266</div>
+        <p class="delta">650 five-star trips · Blue Uber Pro status</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>How the system came together</h2>
+    <div class="phases">
+      <div class="phase">
+        <p class="when">Phase 1 · Fall 2025 — the grind</p>
+        <h3>High volume, gut-feel decisions</h3>
+        <p>198 hours online in a single month for $4,835.44 — $24.42/hr across 2,671 miles.
+           Accept/reject calls were instinct, and every marginal trip added miles the car
+           absorbed as fuel, maintenance, and depreciation.</p>
+      </div>
+      <div class="phase">
+        <p class="when">Phase 2 · April 2026 — the build</p>
+        <h3>Baseline, thresholds, tooling</h3>
+        <p>Logged and analyzed 75+ trips; validated a $32.96/hr gross baseline. Used AI tools
+           to draft accept/reject thresholds, then cross-checked every recommendation against
+           actual earnings before adopting it. Added Mystro + Gridwise (Apr 15) to run both
+           platforms as one operation.</p>
+      </div>
+      <div class="phase">
+        <p class="when">Phase 3 · Apr–Jul 2026 — operating</p>
+        <h3>Rules, not vibes</h3>
+        <p>Every incoming trip scored against a three-tier filter on $/mile and $/hour.
+           Second-platform (Lyft) payouts rose from a $54/week average to $222/week after
+           the system went live.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Second-platform revenue, before and after the system</h2>
+    <p class="sub">Lyft Direct payout transfers by month — take-home deposits reconstructed from
+       73 dated payout records. The multi-app stack (Mystro + Gridwise) went live April 15, 2026.</p>
+    <div class="card">
+      <div class="legend" aria-hidden="true">
+        <span class="key"><span class="swatch" style="background:var(--pre)"></span>Before the system</span>
+        <span class="key"><span class="swatch" style="background:var(--accent)"></span>After the system <span style="color:var(--muted)">(adopted mid-April)</span></span>
+      </div>
+      <figure aria-label="Column chart of monthly Lyft Direct payouts, September 2025 through July 2026">
+        <div class="chart-scroll"><div id="chart-monthly"></div></div>
+      </figure>
+      <p class="chart-note">July is a partial month: driving paused July 16, 2026 (vehicle out of
+         service). Winter gaps reflect months with no Lyft payout activity.</p>
+      <details class="tableview">
+        <summary>View as table</summary>
+        <table id="table-monthly">
+          <thead><tr><th scope="col">Month</th><th scope="col" class="num">Payouts (USD)</th><th scope="col">Period</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </details>
+    </div>
+  </section>
+
+  <section>
+    <h2>The rate shift</h2>
+    <p class="sub">Unfiltered operating benchmark (fall 2025, Uber monthly recap) versus the
+       validated baseline after the trip filter (75-trip tracked sample). Sources differ and are
+       described in the methodology below.</p>
+    <div class="card">
+      <figure aria-label="Dumbbell chart: dollars per hour improved from 24.42 to 32.96; dollars per mile floor moved from 1.81 average to a 2.00 accept minimum">
+        <div class="chart-scroll"><div id="chart-dumbbell"></div></div>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>The decision framework: a three-tier trip filter</h2>
+    <p class="sub">Every trip offer is scored on two rates before acceptance. Rules were drafted
+       with AI assistance, then validated against 75+ actual trips and real earnings before adoption.</p>
+    <div class="card">
+      <figure aria-label="Diagram of the three-tier filter: reject below 1 dollar 18 cents per mile or 27 dollars per hour; evaluate the middle band by context; accept above 2 dollars per mile and 35 dollars per hour">
+        <div class="chart-scroll"><div id="chart-filter"></div></div>
+      </figure>
+      <p class="chart-note">The middle band is evaluated by context — direction, time of day,
+         surge, and repositioning value — not accepted by default.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Preserving the asset</h2>
+    <p class="sub">A car is the operation's capital equipment. Every mile carries fuel, maintenance,
+       and depreciation, so the filter optimizes revenue per mile — not just per hour.</p>
+    <div class="kpis">
+      <div class="tile">
+        <p class="label">Miles driven per $100 earned, unfiltered (fall 2025)</p>
+        <div class="value">55.2<span class="unit"> mi</span></div>
+        <p class="delta">2,671 miles for $4,835.44 in one month</p>
+      </div>
+      <div class="tile">
+        <p class="label">Miles per $100 at the accept floor</p>
+        <div class="value">≤50<span class="unit"> mi</span></div>
+        <p class="delta"><span class="up">▼ ~10%</span> fewer miles for the same revenue at $2.00+/mi</p>
+      </div>
+      <div class="tile">
+        <p class="label">Lyft payout rate after the system</p>
+        <div class="value">$222<span class="unit">/wk</span></div>
+        <p class="delta"><span class="up">▲ 4.1×</span> vs. $54/wk average before (payout records)</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="method">
+    <h2>Methodology &amp; sources</h2>
+    <ol>
+      <li><strong>Lyft payouts:</strong> 73 dated Lyft Direct (Payfare) transfer records,
+          September 2025 – July 2026, aggregated by month. These are take-home deposit transfers,
+          not gross fares; timing of a transfer can lag the rides that earned it.</li>
+      <li><strong>Pre-system benchmark:</strong> Uber's monthly driver recap (fall 2025):
+          $4,835.44 earned over 198 online hours and 2,671 miles ($24.42/hr, $1.81/mi), 23%
+          acceptance rate. Uber notes recap figures are directional, not an official pay statement.</li>
+      <li><strong>Validated baseline:</strong> personal trip log of 75+ trips — $1,946.53 across
+          59.1 tracked online hours ($32.96/hr gross), built in Excel/Google Sheets with
+          Mystro and Gridwise operating data.</li>
+      <li><strong>Honest comparison note:</strong> the before and after hourly figures come from
+          different sources (platform recap vs. tracked trip log). Both are stated only to their
+          verified endpoints, and neither is extrapolated.</li>
+      <li><strong>AI-assisted, human-validated:</strong> Claude and ChatGPT were used to structure
+          the analysis and draft threshold candidates; no rule was adopted until it was
+          cross-checked against actual earnings outcomes.</li>
+    </ol>
+  </section>
+
+  <footer>
+    <span>Fabian Nevarez — operations &amp; data analysis portfolio</span>
+    <a href="https://github.com/futureinvestor9" rel="noopener">GitHub</a>
+    <a href="https://fabiannevarez.github.io/" rel="noopener">Portfolio</a>
+  </footer>
+</div>
+
+<div class="tooltip" id="tooltip" role="status" aria-hidden="true"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  var MONTHS = [
+    { m: "Sep ’25", v: 50.26,   post: false },
+    { m: "Oct ’25", v: 0,       post: false },
+    { m: "Nov ’25", v: 69.34,   post: false },
+    { m: "Dec ’25", v: 682.28,  post: false },
+    { m: "Jan ’26", v: 0,       post: false },
+    { m: "Feb ’26", v: 0,       post: false },
+    { m: "Mar ’26", v: 339.02,  post: false },
+    { m: "Apr ’26", v: 1437.43, post: true, adopt: true },
+    { m: "May ’26", v: 122.34,  post: true },
+    { m: "Jun ’26", v: 1064.44, post: true },
+    { m: "Jul ’26", v: 856.04,  post: true, partial: true }
+  ];
+
+  var css = getComputedStyle(document.documentElement);
+  function tok(name) { return css.getPropertyValue(name).trim(); }
+  var fmtUSD = function (v) {
+    return "$" + v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  };
+
+  var tooltip = document.getElementById("tooltip");
+  function showTip(html, x, y) {
+    tooltip.innerHTML = html;
+    tooltip.style.display = "block";
+    var pad = 14;
+    var w = tooltip.offsetWidth, h = tooltip.offsetHeight;
+    var left = Math.min(x + pad, window.innerWidth - w - 8);
+    var top = y - h - pad; if (top < 8) top = y + pad;
+    tooltip.style.left = left + "px";
+    tooltip.style.top = top + "px";
+  }
+  function hideTip() { tooltip.style.display = "none"; }
+
+  function svgEl(tag, attrs) {
+    var el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+    for (var k in attrs) el.setAttribute(k, attrs[k]);
+    return el;
+  }
+
+  /* ---------- Monthly columns ---------- */
+  function drawMonthly() {
+    var host = document.getElementById("chart-monthly");
+    host.innerHTML = "";
+    var W = 900, H = 300, padL = 52, padR = 14, padT = 34, padB = 34;
+    var innerW = W - padL - padR, innerH = H - padT - padB;
+    var maxV = 1500, ticks = [0, 500, 1000, 1500];
+    var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, width: "100%", role: "img",
+      "aria-label": "Monthly Lyft Direct payouts" });
+    svg.style.minWidth = "640px";
+
+    ticks.forEach(function (t) {
+      var y = padT + innerH - (t / maxV) * innerH;
+      if (t > 0) svg.appendChild(svgEl("line", { x1: padL, x2: W - padR, y1: y, y2: y,
+        stroke: tok("--grid"), "stroke-width": 1 }));
+      var lbl = svgEl("text", { x: padL - 8, y: y + 4, "text-anchor": "end",
+        "font-size": 11, fill: tok("--muted") });
+      lbl.style.fontVariantNumeric = "tabular-nums";
+      lbl.textContent = t === 0 ? "0" : "$" + t.toLocaleString("en-US");
+      svg.appendChild(lbl);
+    });
+
+    var slot = innerW / MONTHS.length;
+    var barW = Math.min(24, slot - 14);
+    var baseY = padT + innerH;
+
+    MONTHS.forEach(function (d, i) {
+      var x = padL + slot * i + (slot - barW) / 2;
+      var hpx = (d.v / maxV) * innerH;
+      var y = baseY - hpx;
+      var color = d.post ? tok("--accent") : tok("--pre");
+
+      if (d.v > 0) {
+        var r = Math.min(4, hpx);
+        var path = "M" + x + "," + baseY +
+          " L" + x + "," + (y + r) +
+          " Q" + x + "," + y + " " + (x + r) + "," + y +
+          " L" + (x + barW - r) + "," + y +
+          " Q" + (x + barW) + "," + y + " " + (x + barW) + "," + (y + r) +
+          " L" + (x + barW) + "," + baseY + " Z";
+        var bar = svgEl("path", { d: path, fill: color, "class": "bar" });
+        svg.appendChild(bar);
+      } else {
+        svg.appendChild(svgEl("line", { x1: x, x2: x + barW, y1: baseY - 1, y2: baseY - 1,
+          stroke: tok("--baseline"), "stroke-width": 2 }));
+      }
+
+      var hit = svgEl("rect", { x: padL + slot * i, y: padT, width: slot, height: innerH,
+        fill: "transparent" });
+      hit.addEventListener("mousemove", function (ev) {
+        var tag = d.partial ? " · partial month (driving paused Jul 16)"
+                : d.adopt ? " · system adopted Apr 15"
+                : d.v === 0 ? " · no payout activity" : "";
+        showTip("<span class='t-title'>" + d.m + "</span><br><span class='t-val'>" +
+          fmtUSD(d.v) + "</span> in Lyft Direct payouts" + tag, ev.clientX, ev.clientY);
+      });
+      hit.addEventListener("mouseleave", hideTip);
+      svg.appendChild(hit);
+
+      var ml = svgEl("text", { x: padL + slot * i + slot / 2, y: baseY + 18,
+        "text-anchor": "middle", "font-size": 11, fill: tok("--muted") });
+      ml.textContent = d.m;
+      svg.appendChild(ml);
+
+      if (d.adopt) {
+        var ax = padL + slot * i + slot / 2;
+        var mk = svgEl("text", { x: ax, y: padT - 18, "text-anchor": "middle",
+          "font-size": 11.5, "font-weight": 600, fill: tok("--ink-2") });
+        mk.textContent = "▲ Mystro + Gridwise adopted";
+        svg.appendChild(mk);
+        svg.appendChild(svgEl("line", { x1: ax, x2: ax, y1: padT - 12, y2: y - 6,
+          stroke: tok("--baseline"), "stroke-width": 1 }));
+      }
+      if (d.m === "Apr ’26" || d.m === "Jun ’26" || d.m === "Dec ’25") {
+        var vl = svgEl("text", { x: x + barW / 2, y: y - 6, "text-anchor": "middle",
+          "font-size": 11, "font-weight": 600, fill: tok("--ink-2") });
+        vl.style.fontVariantNumeric = "tabular-nums";
+        vl.textContent = "$" + Math.round(d.v).toLocaleString("en-US");
+        svg.appendChild(vl);
+      }
+    });
+
+    svg.appendChild(svgEl("line", { x1: padL, x2: W - padR, y1: baseY, y2: baseY,
+      stroke: tok("--baseline"), "stroke-width": 1 }));
+    host.appendChild(svg);
+
+    var tbody = document.querySelector("#table-monthly tbody");
+    tbody.innerHTML = "";
+    MONTHS.forEach(function (d) {
+      var tr = document.createElement("tr");
+      var period = d.post ? "After system" : "Before system";
+      if (d.partial) period += " (partial)";
+      tr.innerHTML = "<td>" + d.m + "</td><td class='num'>" + fmtUSD(d.v) + "</td><td>" + period + "</td>";
+      tbody.appendChild(tr);
+    });
+  }
+
+  /* ---------- Before/after dumbbells ---------- */
+  function drawDumbbell() {
+    var host = document.getElementById("chart-dumbbell");
+    host.innerHTML = "";
+    var rows = [
+      { label: "Earnings per hour", from: 24.42, to: 32.96, min: 20, max: 38,
+        fromTxt: "$24.42", toTxt: "$32.96", note: "+35%" },
+      { label: "Earnings per mile", from: 1.81, to: 2.00, min: 1.5, max: 2.3,
+        fromTxt: "$1.81 avg", toTxt: "$2.00+ floor", note: "accept minimum" }
+    ];
+    var W = 900, rowH = 74, padL = 170, padR = 120, H = rowH * rows.length + 10;
+    var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, width: "100%", role: "img",
+      "aria-label": "Before and after rates" });
+    svg.style.minWidth = "640px";
+    var innerW = W - padL - padR;
+
+    rows.forEach(function (r, i) {
+      var cy = i * rowH + 44;
+      var xF = padL + ((r.from - r.min) / (r.max - r.min)) * innerW;
+      var xT = padL + ((r.to - r.min) / (r.max - r.min)) * innerW;
+
+      var lab = svgEl("text", { x: padL - 16, y: cy + 4, "text-anchor": "end",
+        "font-size": 13, "font-weight": 600, fill: tok("--ink") });
+      lab.textContent = r.label;
+      svg.appendChild(lab);
+
+      svg.appendChild(svgEl("line", { x1: padL, x2: padL + innerW, y1: cy, y2: cy,
+        stroke: tok("--grid"), "stroke-width": 1 }));
+      svg.appendChild(svgEl("line", { x1: xF, x2: xT, y1: cy, y2: cy,
+        stroke: tok("--accent"), "stroke-width": 2, "stroke-linecap": "round" }));
+
+      svg.appendChild(svgEl("circle", { cx: xF, cy: cy, r: 7, fill: tok("--accent-soft"),
+        stroke: tok("--surface"), "stroke-width": 2 }));
+      svg.appendChild(svgEl("circle", { cx: xT, cy: cy, r: 7, fill: tok("--accent"),
+        stroke: tok("--surface"), "stroke-width": 2 }));
+
+      var fl = svgEl("text", { x: xF, y: cy - 14, "text-anchor": "middle",
+        "font-size": 12, fill: tok("--ink-2") });
+      fl.style.fontVariantNumeric = "tabular-nums";
+      fl.textContent = r.fromTxt;
+      svg.appendChild(fl);
+
+      var tl = svgEl("text", { x: xT + 14, y: cy + 4, "text-anchor": "start",
+        "font-size": 13, "font-weight": 650, fill: tok("--ink") });
+      tl.style.fontVariantNumeric = "tabular-nums";
+      tl.textContent = r.toTxt;
+      svg.appendChild(tl);
+
+      var nt = svgEl("text", { x: xT + 14, y: cy + 20, "text-anchor": "start",
+        "font-size": 11.5, fill: tok("--good") });
+      nt.textContent = r.note;
+      svg.appendChild(nt);
+    });
+
+    var keyY = H - 6;
+    var key = svgEl("text", { x: padL, y: keyY, "font-size": 11.5, fill: tok("--muted") });
+    key.textContent = "◦ before (unfiltered)   ● after (with trip filter)";
+    svg.appendChild(key);
+    host.appendChild(svg);
+  }
+
+  /* ---------- Three-tier filter band ---------- */
+  function drawFilter() {
+    var host = document.getElementById("chart-filter");
+    host.innerHTML = "";
+    var W = 900, H = 190, padL = 24, padR = 24, bandY = 58, bandH = 44;
+    var min = 0.8, max = 2.6;
+    var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, width: "100%", role: "img",
+      "aria-label": "Three-tier filter on dollars per mile" });
+    svg.style.minWidth = "640px";
+    var innerW = W - padL - padR;
+    function X(v) { return padL + ((v - min) / (max - min)) * innerW; }
+
+    var zones = [
+      { from: min, to: 1.18, fill: tok("--grid"),        name: "Reject",   crit: "< $1.18/mi or < $27/hr", ink: tok("--ink-2") },
+      { from: 1.18, to: 2.00, fill: tok("--accent-wash"), name: "Evaluate", crit: "context: direction, surge, time", ink: tok("--ink-2") },
+      { from: 2.00, to: max,  fill: tok("--accent"),      name: "Accept",   crit: "> $2.00/mi and > $35/hr", ink: "#ffffff" }
+    ];
+    zones.forEach(function (z, i) {
+      var x = X(z.from), w = X(z.to) - x - (i < zones.length - 1 ? 2 : 0);
+      svg.appendChild(svgEl("rect", { x: x, y: bandY, width: w, height: bandH,
+        rx: 6, fill: z.fill }));
+      var nm = svgEl("text", { x: x + w / 2, y: bandY + bandH / 2 + 4, "text-anchor": "middle",
+        "font-size": 13, "font-weight": 650,
+        fill: i === 2 ? z.ink : tok("--ink") });
+      nm.textContent = z.name;
+      svg.appendChild(nm);
+      var cr = svgEl("text", { x: x + w / 2, y: bandY + bandH + 22, "text-anchor": "middle",
+        "font-size": 11.5, fill: tok("--ink-2") });
+      cr.textContent = z.crit;
+      svg.appendChild(cr);
+    });
+
+    [1.18, 2.00].forEach(function (v) {
+      var x = X(v);
+      svg.appendChild(svgEl("line", { x1: x - 1, x2: x - 1, y1: bandY - 10, y2: bandY + bandH + 4,
+        stroke: tok("--baseline"), "stroke-width": 1 }));
+      var t = svgEl("text", { x: x, y: bandY - 16, "text-anchor": "middle",
+        "font-size": 12, "font-weight": 600, fill: tok("--ink") });
+      t.style.fontVariantNumeric = "tabular-nums";
+      t.textContent = "$" + v.toFixed(2) + "/mi";
+      svg.appendChild(t);
+    });
+
+    var axis = svgEl("text", { x: padL, y: H - 8, "font-size": 11.5, fill: tok("--muted") });
+    axis.textContent = "Trip offer rate, dollars per mile →";
+    svg.appendChild(axis);
+    host.appendChild(svg);
+  }
+
+  function drawAll() { drawMonthly(); drawDumbbell(); drawFilter(); }
+  drawAll();
+
+  var mq = window.matchMedia("(prefers-color-scheme: dark)");
+  if (mq.addEventListener) mq.addEventListener("change", drawAll);
+  new MutationObserver(drawAll).observe(document.documentElement,
+    { attributes: true, attributeFilter: ["data-theme"] });
+})();
+</script>
+</body>
+</html>
