@@ -96,26 +96,40 @@
   //   { total, fullyDone, byType: { call, text, card, social } }
   //   where byType values are counts of contacts that have that type done.
   DTD.getWeekProgress = function (groups) {
-    var info     = DTD.getCurrentQuarterInfo();
+    var info = DTD.getCurrentQuarterInfo();
+    var rot  = info.weekRotation;
+
+    // Which single touch type each active group owes THIS week
+    var groupType = {};
+    groupType[rot.call]   = 'call';
+    groupType[rot.text]   = 'text';
+    groupType[rot.card]   = 'card';
+    groupType[rot.social] = 'social';
+
     var contacts = [];
     groups.forEach(function (g) {
       DTD.getContactsByGroup(g).forEach(function (c) { contacts.push(c); });
     });
 
-    var byType  = { call: 0, text: 0, card: 0, social: 0 };
-    var fullyDone = 0;
+    var byType    = { call: 0, text: 0, card: 0, social: 0 };
+    var weekDone  = 0;   // completed THIS week's one assigned touch
+    var fullyDone = 0;   // completed all 4 quarterly touches
 
     contacts.forEach(function (c) {
-      var status = DTD.getTouchStatus(c.id, info.quarter, info.year);
+      var status  = DTD.getTouchStatus(c.id, info.quarter, info.year);
       var allDone = true;
       DTD.TOUCH_TYPES.forEach(function (t) {
         if (status[t]) { byType[t]++; } else { allDone = false; }
       });
       if (allDone) fullyDone++;
+
+      var assigned = groupType[DTD.getLetterGroup(c.lastName)];
+      if (assigned && status[assigned]) { weekDone++; }
     });
 
     return {
       total:      contacts.length,
+      weekDone:   weekDone,
       fullyDone:  fullyDone,
       byType:     byType
     };

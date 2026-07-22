@@ -151,17 +151,21 @@
         }
         break;
 
-      case 'print-card':
-        window.print();
+      case 'print-card': {
+        var pcContact = DTD.getContactById(DTD.state.currentContactId);
+        if (pcContact) { DTD.printNoteCard(pcContact); }
         break;
+      }
 
       // ── Confirm dialog ─────────────────────
-      case 'confirm-ok':
+      case 'confirm-ok': {
+        // Capture the callback before closeConfirm() clears it, or the
+        // confirmed action (e.g. delete-contact) never runs.
+        var confirmCb = DTD.state.confirmCallback;
         DTD.closeConfirm();
-        if (typeof DTD.state.confirmCallback === 'function') {
-          DTD.state.confirmCallback();
-        }
+        if (typeof confirmCb === 'function') { confirmCb(); }
         break;
+      }
 
       case 'confirm-cancel':
         DTD.closeConfirm();

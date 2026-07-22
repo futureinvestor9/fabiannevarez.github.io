@@ -45,6 +45,22 @@
     DTD.state.confirmCallback = null;
   };
 
+  // ── Print a single note card ──────────────────
+  // Renders ONLY the address + note (via a dedicated #print-area the print
+  // stylesheet isolates), so the CRM screen and modal chrome don't print.
+  DTD.printNoteCard = function (contact) {
+    if (!contact) return;
+    var action = DTD.buildNoteCardAction(contact);
+    var area   = document.getElementById('print-area');
+    if (!area) {
+      area = document.createElement('div');
+      area.id = 'print-area';
+      document.body.appendChild(area);
+    }
+    area.innerHTML = action.printHtml;
+    window.print();
+  };
+
   // ── Modal Open / Close ────────────────────────
 
   DTD.closeModal = function () {
@@ -116,7 +132,7 @@
     var html = '';
 
     if (action.url) {
-      html += '<a class="modal-action-btn" href="' + action.url + '">';
+      html += '<a class="modal-action-btn" href="' + DTD.escHtml(action.url) + '">';
       html += '  <span style="color:var(--call-color)">' + DTD.ICONS.call + '</span>';
       html += '  <span class="modal-action-btn__text">Call ' + DTD.escHtml(contact.firstName) + '</span>';
       html += '  <span class="modal-action-btn__sub">' + DTD.escHtml(contact.phone) + '</span>';
@@ -138,7 +154,7 @@
     var html = '';
 
     if (action.url) {
-      html += '<a class="modal-action-btn" href="' + action.url + '">';
+      html += '<a class="modal-action-btn" href="' + DTD.escHtml(action.url) + '">';
       html += '  <span style="color:var(--text-color)">' + DTD.ICONS.text + '</span>';
       html += '  <span class="modal-action-btn__text">Open SMS to ' + DTD.escHtml(contact.firstName) + '</span>';
       html += '  <span class="modal-action-btn__sub">' + DTD.escHtml(contact.phone) + '</span>';

@@ -95,7 +95,7 @@
     var prog   = DTD.getWeekProgress(groups);
     var rot    = info.weekRotation;
 
-    var pct    = prog.total > 0 ? Math.round((prog.fullyDone / prog.total) * 100) : 0;
+    var pct    = prog.total > 0 ? Math.round((prog.weekDone / prog.total) * 100) : 0;
     var r      = 32;
     var circ   = 2 * Math.PI * r;
     var offset = circ - (pct / 100) * circ;
@@ -137,7 +137,7 @@
     html += '  </div>';
     html += '  <div class="progress-stats">';
     html += '    <div class="progress-stats__row"><span>Contacts this week</span><span class="progress-stats__val">' + prog.total + '</span></div>';
-    html += '    <div class="progress-stats__row"><span>Fully done</span><span class="progress-stats__val">' + prog.fullyDone + '</span></div>';
+    html += '    <div class="progress-stats__row"><span>Done this week</span><span class="progress-stats__val">' + prog.weekDone + '</span></div>';
     html += '    <div class="progress-stats__row"><span>Q' + info.quarter + ' quarter</span><span class="progress-stats__val">' + info.year + '</span></div>';
     html += '  </div>';
     html += '</div>';

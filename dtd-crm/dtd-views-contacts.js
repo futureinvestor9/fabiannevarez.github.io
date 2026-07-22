@@ -9,6 +9,7 @@
   // ── Contact List ──────────────────────────────
 
   DTD.renderContacts = function () {
+    DTD.state.currentView = 'contacts';
     var query    = DTD.state.searchQuery;
     var filter   = DTD.state.filterGroup;
     var contacts = query ? DTD.searchContacts(query) : DTD.getContacts();
@@ -106,6 +107,7 @@
   // ── Contact Detail ────────────────────────────
 
   DTD.renderDetail = function (contactId) {
+    DTD.state.currentView = 'detail';
     DTD.state.currentContactId = contactId;
     var contact = DTD.getContactById(contactId);
     if (!contact) { DTD.renderContacts(); return; }
@@ -149,7 +151,7 @@
       row += '<span class="info-row__label">' + label + '</span>';
       row += '<span class="info-row__value">' + DTD.escHtml(value) + '</span>';
       if (action) {
-        row += '<a class="info-row__action" href="' + action + '">' + actionLabel + '</a>';
+        row += '<a class="info-row__action" href="' + DTD.escHtml(action) + '">' + actionLabel + '</a>';
       }
       row += '</div>';
       return row;
@@ -209,6 +211,7 @@
   // ── Add / Edit Form ───────────────────────────
 
   DTD.renderForm = function (contactId) {
+    DTD.state.currentView = 'form';
     var isEdit  = !!contactId;
     var contact = isEdit ? (DTD.getContactById(contactId) || {}) : {};
 

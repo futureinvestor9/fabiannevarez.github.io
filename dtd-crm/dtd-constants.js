@@ -12,20 +12,23 @@
     V:'HV', W:'AW', X:'MX', Y:'YZ', Z:'YZ'
   };
 
-  // 13-week rotation — which group does each touchpoint type this week
+  // 13-week rotation — which group does each touchpoint type this week.
+  // Built as a full rotation over all 13 groups so that every group receives
+  // each of the 4 touch types exactly once across the quarter (4 touches / 16
+  // per year per contact) — no group is left out and none is doubled up.
   DTD.WEEK_ROTATION = [
-    { call:'AW', text:'BE', card:'CK', social:'FG' }, // Week 1
-    { call:'DO', text:'HV', card:'MX', social:'NR' }, // Week 2
-    { call:'PL', text:'SU', card:'TJ', social:'IQ' }, // Week 3
-    { call:'BE', text:'CK', card:'FG', social:'AW' }, // Week 4
-    { call:'HV', text:'MX', card:'NR', social:'DO' }, // Week 5
-    { call:'SU', text:'TJ', card:'IQ', social:'PL' }, // Week 6
-    { call:'CK', text:'FG', card:'AW', social:'BE' }, // Week 7
-    { call:'MX', text:'NR', card:'DO', social:'HV' }, // Week 8
-    { call:'TJ', text:'IQ', card:'PL', social:'SU' }, // Week 9
-    { call:'FG', text:'AW', card:'BE', social:'CK' }, // Week 10
-    { call:'NR', text:'DO', card:'HV', social:'MX' }, // Week 11
-    { call:'IQ', text:'PL', card:'SU', social:'TJ' }, // Week 12
+    { call:'AW', text:'BE', card:'CK', social:'DO' }, // Week 1
+    { call:'BE', text:'CK', card:'DO', social:'FG' }, // Week 2
+    { call:'CK', text:'DO', card:'FG', social:'HV' }, // Week 3
+    { call:'DO', text:'FG', card:'HV', social:'IQ' }, // Week 4
+    { call:'FG', text:'HV', card:'IQ', social:'MX' }, // Week 5
+    { call:'HV', text:'IQ', card:'MX', social:'NR' }, // Week 6
+    { call:'IQ', text:'MX', card:'NR', social:'PL' }, // Week 7
+    { call:'MX', text:'NR', card:'PL', social:'SU' }, // Week 8
+    { call:'NR', text:'PL', card:'SU', social:'TJ' }, // Week 9
+    { call:'PL', text:'SU', card:'TJ', social:'YZ' }, // Week 10
+    { call:'SU', text:'TJ', card:'YZ', social:'AW' }, // Week 11
+    { call:'TJ', text:'YZ', card:'AW', social:'BE' }, // Week 12
     { call:'YZ', text:'AW', card:'BE', social:'CK' }, // Week 13
   ];
 
