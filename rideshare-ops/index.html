@@ -19,6 +19,7 @@
     --accent-deep: #1c5cab;
     --accent-soft: #86b6ef;
     --accent-wash: rgba(42,120,214,0.10);
+    --series2:     #eb6834;
     --pre:         #9a988f;
     --good:        #006300;
     --ring:        rgba(11,11,11,0.10);
@@ -37,6 +38,7 @@
       --accent-deep: #86b6ef;
       --accent-soft: #1c5cab;
       --accent-wash: rgba(57,135,229,0.14);
+      --series2:     #d95926;
       --pre:         #6f6e67;
       --good:        #0ca30c;
       --ring:        rgba(255,255,255,0.10);
@@ -55,6 +57,7 @@
     --accent-deep: #86b6ef;
     --accent-soft: #1c5cab;
     --accent-wash: rgba(57,135,229,0.14);
+    --series2:     #d95926;
     --pre:         #6f6e67;
     --good:        #0ca30c;
     --ring:        rgba(255,255,255,0.10);
@@ -174,9 +177,9 @@
         <p class="delta"><span class="up">▲ 94%</span> per mile, March → June 2026</p>
       </div>
       <div class="tile">
-        <p class="label">Uber gross earnings, 2026 (Mar–Jun)</p>
-        <div class="value">$31,285</div>
-        <p class="delta">1,245 trips · 12,796 online miles</p>
+        <p class="label">Take-home, both apps (Mar–Jun 2026)</p>
+        <div class="value">$20,989</div>
+        <p class="delta">Uber + Lyft net deposits · $1,084 → $7,749/mo</p>
       </div>
       <div class="tile">
         <p class="label">Miles driven per trip</p>
@@ -184,9 +187,9 @@
         <p class="delta"><span class="up">▼ 41%</span> less wear per trip on the car</p>
       </div>
       <div class="tile">
-        <p class="label">Uber gross earnings, 2025 (1099-K)</p>
-        <div class="value">$24,024</div>
-        <p class="delta">1,302 trips · Aug–Dec ramp</p>
+        <p class="label">Hourly earnings</p>
+        <div class="value">$24.42<span class="unit"> → </span>$32.96</div>
+        <p class="delta"><span class="up">▲ 35%</span> before vs. after the system</p>
       </div>
     </div>
   </section>
@@ -234,83 +237,34 @@
       <div class="phase">
         <p class="when">Phase 3 · Apr–Jul 2026 — operating</p>
         <h3>Rules, not vibes</h3>
-        <p>Every incoming trip scored against a three-tier filter on $/mile and $/hour.
-           Second-platform (Lyft) payouts rose from a $54/week average to $222/week after
-           the system went live.</p>
+        <p>Every incoming trip scored against a three-tier filter on $/mile and $/hour, run
+           across Uber and Lyft at once. Combined monthly take-home climbed from ~$1,084 to
+           ~$7,700 as the rules took hold.</p>
       </div>
     </div>
   </section>
 
   <section>
-    <h2>Second-platform revenue, before and after the system</h2>
-    <p class="sub">Lyft Direct payout transfers by month — take-home deposits reconstructed from
-       73 dated payout records. The multi-app stack (Mystro + Gridwise) went live April 15, 2026.</p>
+    <h2>What it added up to: take-home across both apps</h2>
+    <p class="sub">Monthly take-home (net deposits to the bank), Uber and Lyft combined. Same efficiency
+       gain, now in dollars — total pay climbed from $1,084 in March to $7,749 in May as the system took hold.</p>
     <div class="card">
       <div class="legend" aria-hidden="true">
-        <span class="key"><span class="swatch" style="background:var(--pre)"></span>Before the system</span>
-        <span class="key"><span class="swatch" style="background:var(--accent)"></span>After the system <span style="color:var(--muted)">(adopted mid-April)</span></span>
+        <span class="key"><span class="swatch" style="background:var(--accent)"></span>Uber (net)</span>
+        <span class="key"><span class="swatch" style="background:var(--series2)"></span>Lyft (net)</span>
       </div>
-      <figure aria-label="Column chart of monthly Lyft Direct payouts, September 2025 through July 2026">
-        <div class="chart-scroll"><div id="chart-monthly"></div></div>
+      <figure aria-label="Stacked column chart of combined monthly take-home, Uber plus Lyft, March through June 2026">
+        <div class="chart-scroll"><div id="chart-combined"></div></div>
       </figure>
-      <p class="chart-note">July is a partial month: driving paused July 16, 2026 (vehicle out of
-         service). Winter gaps reflect months with no Lyft payout activity.</p>
+      <p class="chart-note">Both figures are net deposits (money that reached the bank), so they add up
+         cleanly. The trip filter went live April 15, 2026.</p>
       <details class="tableview">
         <summary>View as table</summary>
-        <table id="table-monthly">
-          <thead><tr><th scope="col">Month</th><th scope="col" class="num">Payouts (USD)</th><th scope="col">Period</th></tr></thead>
+        <table id="table-combined">
+          <thead><tr><th scope="col">Month</th><th scope="col" class="num">Uber</th><th scope="col" class="num">Lyft</th><th scope="col" class="num">Total</th></tr></thead>
           <tbody></tbody>
         </table>
       </details>
-    </div>
-  </section>
-
-  <section>
-    <h2>Ride volume followed the system going live</h2>
-    <p class="sub">Completed Lyft rides per week, from Lyft's own weekly performance emails —
-       an independent record from the payout data. Weekly volume steps up right at the
-       mid-April system adoption and holds there.</p>
-    <div class="card">
-      <figure aria-label="Column chart of completed Lyft rides per week across 2026, stepping up after mid-April">
-        <div class="chart-scroll"><div id="chart-rides"></div></div>
-      </figure>
-      <p class="chart-note">Gaps are weeks with no performance email / minimal driving. Counts are
-         completed rides, read from Lyft's "feedback from N rides" summaries.</p>
-    </div>
-  </section>
-
-  <section>
-    <h2>Two independent records agree</h2>
-    <p class="sub">A credibility check: the numbers on this page come from separate sources that
-       don't reference each other, and they line up.</p>
-    <div class="kpis">
-      <div class="tile">
-        <p class="label">Lyft take-home rate (May, from Lyft's breakdown)</p>
-        <div class="value">54<span class="unit">%</span></div>
-        <p class="delta">$215.01 in passenger payments → $115.80 to the driver</p>
-      </div>
-      <div class="tile">
-        <p class="label">May net earnings — Lyft's figure vs. my payout records</p>
-        <div class="value">$115.80 <span class="unit">vs</span> $122.34</div>
-        <p class="delta"><span class="up">✓ agree within 5.6%</span> — two independent sources</p>
-      </div>
-      <div class="tile">
-        <p class="label">Completed Lyft rides tracked in 2026</p>
-        <div class="value">232</div>
-        <p class="delta">across 13 recorded weeks</p>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2>The rate shift</h2>
-    <p class="sub">Two ways the same shift shows up. Hourly: the fall-2025 operating benchmark
-       ($24.42/hr) versus the validated post-filter baseline ($32.96/hr). Per-mile: Uber's official
-       monthly tax records, March versus June 2026.</p>
-    <div class="card">
-      <figure aria-label="Dumbbell chart: dollars per hour improved from 24.42 to 32.96; dollars per mile floor moved from 1.81 average to a 2.00 accept minimum">
-        <div class="chart-scroll"><div id="chart-dumbbell"></div></div>
-      </figure>
     </div>
   </section>
 
@@ -389,7 +343,6 @@
   <footer>
     <span>Fabian Nevarez — operations &amp; data analysis portfolio</span>
     <a href="https://github.com/futureinvestor9" rel="noopener">GitHub</a>
-    <a href="https://fabiannevarez.github.io/" rel="noopener">Portfolio</a>
   </footer>
 </div>
 
@@ -399,34 +352,11 @@
 (function () {
   "use strict";
 
-  var MONTHS = [
-    { m: "Sep ’25", v: 50.26,   post: false },
-    { m: "Oct ’25", v: 0,       post: false },
-    { m: "Nov ’25", v: 69.34,   post: false },
-    { m: "Dec ’25", v: 682.28,  post: false },
-    { m: "Jan ’26", v: 0,       post: false },
-    { m: "Feb ’26", v: 0,       post: false },
-    { m: "Mar ’26", v: 339.02,  post: false },
-    { m: "Apr ’26", v: 1437.43, post: true, adopt: true },
-    { m: "May ’26", v: 122.34,  post: true },
-    { m: "Jun ’26", v: 1064.44, post: true },
-    { m: "Jul ’26", v: 856.04,  post: true, partial: true }
-  ];
-
-  var RIDES = [
-    { w: "Dec 26", v: 3,  post: false },
-    { w: "Mar 6",  v: 7,  post: false },
-    { w: "Mar 20", v: 7,  post: false },
-    { w: "Mar 27", v: 8,  post: false },
-    { w: "Apr 3",  v: 19, post: false },
-    { w: "Apr 10", v: 39, post: true, adopt: true },
-    { w: "Apr 17", v: 29, post: true },
-    { w: "May 8",  v: 6,  post: true },
-    { w: "Jun 12", v: 26, post: true },
-    { w: "Jun 19", v: 26, post: true },
-    { w: "Jun 26", v: 35, post: true },
-    { w: "Jul 3",  v: 12, post: true },
-    { w: "Jul 10", v: 15, post: true }
+  var COMBINED = [
+    { m: "Mar ’26", uber: 745.16,  lyft: 339.02,  post: false },
+    { m: "Apr ’26", uber: 3464.65, lyft: 1437.43, post: true, adopt: true },
+    { m: "May ’26", uber: 7626.24, lyft: 122.34,  post: true },
+    { m: "Jun ’26", uber: 6189.47, lyft: 1064.44, post: true }
   ];
 
   var UBER = [
@@ -461,16 +391,18 @@
     return el;
   }
 
-  /* ---------- Monthly columns ---------- */
-  function drawMonthly() {
-    var host = document.getElementById("chart-monthly");
+  /* ---------- Combined stacked take-home ---------- */
+  function drawCombined() {
+    var host = document.getElementById("chart-combined");
+    if (!host) return;
     host.innerHTML = "";
-    var W = 900, H = 300, padL = 52, padR = 14, padT = 34, padB = 34;
+    var W = 900, H = 320, padL = 56, padR = 14, padT = 40, padB = 34;
     var innerW = W - padL - padR, innerH = H - padT - padB;
-    var maxV = 1500, ticks = [0, 500, 1000, 1500];
+    var maxV = 8000, ticks = [0, 2000, 4000, 6000, 8000];
     var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, width: "100%", role: "img",
-      "aria-label": "Monthly Lyft Direct payouts" });
-    svg.style.minWidth = "640px";
+      "aria-label": "Combined monthly take-home, Uber plus Lyft" });
+    svg.style.minWidth = "560px";
+    var baseY = padT + innerH;
 
     ticks.forEach(function (t) {
       var y = padT + innerH - (t / maxV) * innerH;
@@ -479,67 +411,65 @@
       var lbl = svgEl("text", { x: padL - 8, y: y + 4, "text-anchor": "end",
         "font-size": 11, fill: tok("--muted") });
       lbl.style.fontVariantNumeric = "tabular-nums";
-      lbl.textContent = t === 0 ? "0" : "$" + t.toLocaleString("en-US");
+      lbl.textContent = t === 0 ? "0" : "$" + (t / 1000) + "k";
       svg.appendChild(lbl);
     });
 
-    var slot = innerW / MONTHS.length;
-    var barW = Math.min(24, slot - 14);
-    var baseY = padT + innerH;
+    var slot = innerW / COMBINED.length;
+    var barW = Math.min(70, slot - 46);
+    function rectPath(x, w, top, bottom, rTop) {
+      var r = Math.min(rTop, bottom - top);
+      return "M" + x + "," + bottom + " L" + x + "," + (top + r) +
+        " Q" + x + "," + top + " " + (x + r) + "," + top +
+        " L" + (x + w - r) + "," + top + " Q" + (x + w) + "," + top + " " + (x + w) + "," + (top + r) +
+        " L" + (x + w) + "," + bottom + " Z";
+    }
 
-    MONTHS.forEach(function (d, i) {
+    COMBINED.forEach(function (d, i) {
       var x = padL + slot * i + (slot - barW) / 2;
-      var hpx = (d.v / maxV) * innerH;
-      var y = baseY - hpx;
-      var color = d.post ? tok("--accent") : tok("--pre");
+      var total = d.uber + d.lyft;
+      var uberH = (d.uber / maxV) * innerH;
+      var lyftH = (d.lyft / maxV) * innerH;
+      var uberTop = baseY - uberH;
+      var lyftBottom = uberTop - 2;            // 2px surface gap between segments
+      var lyftTop = lyftBottom - lyftH;
 
-      if (d.v > 0) {
-        var r = Math.min(4, hpx);
-        var path = "M" + x + "," + baseY +
-          " L" + x + "," + (y + r) +
-          " Q" + x + "," + y + " " + (x + r) + "," + y +
-          " L" + (x + barW - r) + "," + y +
-          " Q" + (x + barW) + "," + y + " " + (x + barW) + "," + (y + r) +
-          " L" + (x + barW) + "," + baseY + " Z";
-        var bar = svgEl("path", { d: path, fill: color, "class": "bar" });
-        svg.appendChild(bar);
-      } else {
-        svg.appendChild(svgEl("line", { x1: x, x2: x + barW, y1: baseY - 1, y2: baseY - 1,
-          stroke: tok("--baseline"), "stroke-width": 2 }));
-      }
+      // Uber segment (bottom) — square corners
+      svg.appendChild(svgEl("rect", { x: x, y: uberTop, width: barW, height: uberH,
+        fill: tok("--accent"), "class": "bar" }));
+      // Lyft segment (top) — rounded data-end
+      svg.appendChild(svgEl("path", { d: rectPath(x, barW, lyftTop, lyftBottom, 4),
+        fill: tok("--series2"), "class": "bar" }));
 
-      var hit = svgEl("rect", { x: padL + slot * i, y: padT, width: slot, height: innerH,
-        fill: "transparent" });
+      var hit = svgEl("rect", { x: padL + slot * i, y: padT, width: slot, height: innerH, fill: "transparent" });
       hit.addEventListener("mousemove", function (ev) {
-        var tag = d.partial ? " · partial month (driving paused Jul 16)"
-                : d.adopt ? " · system adopted Apr 15"
-                : d.v === 0 ? " · no payout activity" : "";
-        showTip("<span class='t-title'>" + d.m + "</span><br><span class='t-val'>" +
-          fmtUSD(d.v) + "</span> in Lyft Direct payouts" + tag, ev.clientX, ev.clientY);
+        var tag = d.adopt ? " · system adopted Apr 15" : "";
+        showTip("<span class='t-title'>" + d.m + tag + "</span><br>" +
+          "<span class='t-val'>" + fmtUSD(total) + "</span> total<br>" +
+          "Uber " + fmtUSD(d.uber) + " · Lyft " + fmtUSD(d.lyft), ev.clientX, ev.clientY);
       });
       hit.addEventListener("mouseleave", hideTip);
       svg.appendChild(hit);
 
       var ml = svgEl("text", { x: padL + slot * i + slot / 2, y: baseY + 18,
-        "text-anchor": "middle", "font-size": 11, fill: tok("--muted") });
+        "text-anchor": "middle", "font-size": 11.5, fill: tok("--muted") });
       ml.textContent = d.m;
       svg.appendChild(ml);
 
+      var vl = svgEl("text", { x: x + barW / 2, y: lyftTop - 8, "text-anchor": "middle",
+        "font-size": 12.5, "font-weight": 650, fill: tok("--ink") });
+      vl.style.fontVariantNumeric = "tabular-nums";
+      vl.textContent = "$" + Math.round(total).toLocaleString("en-US");
+      svg.appendChild(vl);
+
       if (d.adopt) {
         var ax = padL + slot * i + slot / 2;
-        var mk = svgEl("text", { x: ax, y: padT - 18, "text-anchor": "middle",
+        var mk = svgEl("text", { x: ax, y: padT - 20, "text-anchor": "middle",
           "font-size": 11.5, "font-weight": 600, fill: tok("--ink-2") });
-        mk.textContent = "▲ Mystro + Gridwise adopted";
+        mk.textContent = "▲ trip filter live";
         svg.appendChild(mk);
-        svg.appendChild(svgEl("line", { x1: ax, x2: ax, y1: padT - 12, y2: y - 6,
+        svg.appendChild(svgEl("line", { x1: ax, x2: ax, y1: padT - 14, y2: lyftTop - 22,
           stroke: tok("--baseline"), "stroke-width": 1 }));
-      }
-      if (d.m === "Apr ’26" || d.m === "Jun ’26" || d.m === "Dec ’25") {
-        var vl = svgEl("text", { x: x + barW / 2, y: y - 6, "text-anchor": "middle",
-          "font-size": 11, "font-weight": 600, fill: tok("--ink-2") });
-        vl.style.fontVariantNumeric = "tabular-nums";
-        vl.textContent = "$" + Math.round(d.v).toLocaleString("en-US");
-        svg.appendChild(vl);
       }
     });
 
@@ -547,20 +477,22 @@
       stroke: tok("--baseline"), "stroke-width": 1 }));
     host.appendChild(svg);
 
-    var tbody = document.querySelector("#table-monthly tbody");
-    tbody.innerHTML = "";
-    MONTHS.forEach(function (d) {
-      var tr = document.createElement("tr");
-      var period = d.post ? "After system" : "Before system";
-      if (d.partial) period += " (partial)";
-      tr.innerHTML = "<td>" + d.m + "</td><td class='num'>" + fmtUSD(d.v) + "</td><td>" + period + "</td>";
-      tbody.appendChild(tr);
-    });
+    var tb = document.querySelector("#table-combined tbody");
+    if (tb) {
+      tb.innerHTML = "";
+      COMBINED.forEach(function (d) {
+        var tr = document.createElement("tr");
+        tr.innerHTML = "<td>" + d.m + "</td><td class='num'>" + fmtUSD(d.uber) + "</td><td class='num'>" +
+          fmtUSD(d.lyft) + "</td><td class='num'>" + fmtUSD(d.uber + d.lyft) + "</td>";
+        tb.appendChild(tr);
+      });
+    }
   }
 
-  /* ---------- Before/after dumbbells ---------- */
+  /* ---------- Before/after dumbbells (unused, retained) ---------- */
   function drawDumbbell() {
     var host = document.getElementById("chart-dumbbell");
+    if (!host) return;
     host.innerHTML = "";
     var rows = [
       { label: "Hourly earnings", from: 24.42, to: 32.96, min: 20, max: 38,
@@ -826,7 +758,7 @@
     }
   }
 
-  function drawAll() { drawPerMile(); drawMonthly(); drawRides(); drawDumbbell(); drawFilter(); }
+  function drawAll() { drawPerMile(); drawCombined(); drawFilter(); }
   drawAll();
 
   var mq = window.matchMedia("(prefers-color-scheme: dark)");
