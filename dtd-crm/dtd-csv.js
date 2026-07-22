@@ -64,10 +64,15 @@
   // mapping = { csvColumnIndex: contactFieldName }
   // e.g. { 0: 'firstName', 1: 'lastName', 2: 'phone' }
   DTD.mapCSVToContacts = function (rows, mapping) {
+    // Seed every editable field so an unmapped column never leaves a property
+    // undefined (renderers concatenate firstName + lastName → "undefined Smith").
+    var BASE = ['firstName','lastName','phone','email',
+                'instagram','linkedin','facebook','twitter','address','notes'];
     return rows
       .filter(function (row) { return row.some(function (f) { return f; }); })
       .map(function (row) {
         var contact = {};
+        BASE.forEach(function (f) { contact[f] = ''; });
         Object.keys(mapping).forEach(function (colIdx) {
           var field = mapping[colIdx];
           if (field && field !== '__skip__') {

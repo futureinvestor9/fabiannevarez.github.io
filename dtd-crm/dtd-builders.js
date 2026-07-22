@@ -101,7 +101,7 @@
       // Minimal HTML for the print pane — styled by @media print rules in CSS
       printHtml: '<div class="address-block">' +
                    DTD.escHtml(contact.firstName) + ' ' + DTD.escHtml(contact.lastName) + '<br>' +
-                   DTD.escHtml(contact.address || '(no address on file)').replace(/,\s*/g, '<br>') +
+                   DTD.escHtml(contact.address || '(no address on file)').replace(/\s*(?:,|\n)+\s*/g, '<br>') +
                  '</div>' +
                  '<div class="print-note-body">' + DTD.escHtml(body) + '</div>'
     };
