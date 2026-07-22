@@ -241,11 +241,18 @@
       html += '<p style="color:var(--text-muted);font-size:1.3rem;margin-bottom:10px">No email or social handles on file.</p>';
     }
 
-    html += '<div style="font-size:1.2rem;color:var(--text-muted);margin-bottom:6px">COPY MESSAGE</div>';
-    html += '<div class="modal-script">' + DTD.escHtml(action.copyText) + '</div>';
+    // Copy text should match the channel shown. With no social handle to DM,
+    // this touch is an email, so offer the email template — not the social one.
+    var emailOnly  = hasEmail && !hasLinks;
+    var copyMsg    = emailOnly ? email.preview : action.copyText;
+    var copyHeader = emailOnly ? 'COPY EMAIL'  : 'COPY MESSAGE';
+    var copyLabel  = emailOnly ? 'Copy Email'  : 'Copy Message';
+
+    html += '<div style="font-size:1.2rem;color:var(--text-muted);margin-bottom:6px">' + copyHeader + '</div>';
+    html += '<div class="modal-script">' + DTD.escHtml(copyMsg) + '</div>';
     html += '<button class="modal-copy-btn" data-action="copy-text"' +
-            '  data-text="' + DTD.escHtml(action.copyText) + '">' +
-            '  ' + DTD.ICONS.copy + ' Copy Message</button>';
+            '  data-text="' + DTD.escHtml(copyMsg) + '">' +
+            '  ' + DTD.ICONS.copy + ' ' + copyLabel + '</button>';
 
     return html;
   }
