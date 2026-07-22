@@ -1,276 +1,309 @@
-<!-- 
-  Hello 😊.
-
-  This template is designed and developed by Nisar Hassan Naqvi
-  for anyone to use for free or customize the way they like.
-
-  Github Repo: https://github.com/nisarhassan12/portfolio-template/
-  My Website: https://nisar.dev
-
-  For business & inquires, contact me => syednisarhassan12@gmail.com
--->
-
-<!--
-  Follow the instructions written in comments to create your stunning portfolio
--->
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="shortcut icon" type="image/png" href="./images/favicon.png" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fabian Nevarez — CRM / Revenue Operations &amp; Data Quality Analyst</title>
+<meta name="description" content="Operator-analyst focused on CRM operations, revenue operations, and data quality. Portfolio of live, data-driven projects.">
+<style>
+  :root {
+    color-scheme: light;
+    --page:        #f7f7f4;
+    --surface:     #fcfcfb;
+    --ink:         #14161a;
+    --ink-2:       #52514e;
+    --muted:       #898781;
+    --grid:        #e1e0d9;
+    --accent:      #2a78d6;
+    --accent-deep: #1c5cab;
+    --accent-wash: rgba(42,120,214,0.10);
+    --series2:     #eb6834;
+    --good:        #006300;
+    --ring:        rgba(11,11,11,0.10);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --page:        #0d0d0d;
+      --surface:     #1a1a19;
+      --ink:         #ffffff;
+      --ink-2:       #c3c2b7;
+      --muted:       #898781;
+      --grid:        #2c2c2a;
+      --accent:      #3987e5;
+      --accent-deep: #86b6ef;
+      --accent-wash: rgba(57,135,229,0.14);
+      --series2:     #d95926;
+      --good:        #0ca30c;
+      --ring:        rgba(255,255,255,0.10);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page:        #0d0d0d;
+    --surface:     #1a1a19;
+    --ink:         #ffffff;
+    --ink-2:       #c3c2b7;
+    --muted:       #898781;
+    --grid:        #2c2c2a;
+    --accent:      #3987e5;
+    --accent-deep: #86b6ef;
+    --accent-wash: rgba(57,135,229,0.14);
+    --series2:     #d95926;
+    --good:        #0ca30c;
+    --ring:        rgba(255,255,255,0.10);
+  }
 
-  <!-- Put your site title here -->
-  <title>
-    Syed Ali Hussnain | A Web Developer based in Lahore, Pakistan.
-  </title>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--page);
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 40px 20px 64px; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
 
-  <meta name="description" content="Add small description of yourslef.">
-  <!-- Add some coding keywords below, Ex: (React, CSS etc) -->
-  <meta name="keywords" content="Put your name, skills and some coding keywords" />
-  <link rel="stylesheet" href="index.css" />
+  .eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.09em;
+    text-transform: uppercase; color: var(--muted); margin: 0 0 8px;
+  }
+  header.masthead { padding: 8px 0 30px; border-bottom: 1px solid var(--grid); margin-bottom: 34px; }
+  h1 { font-size: clamp(28px, 5vw, 40px); line-height: 1.12; margin: 0 0 12px; letter-spacing: -0.015em; text-wrap: balance; }
+  .lede { color: var(--ink-2); max-width: 66ch; margin: 0; font-size: 16px; }
+  .chips { margin-top: 18px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip {
+    font-size: 12.5px; font-weight: 500; color: var(--ink-2);
+    background: var(--surface); border: 1px solid var(--ring);
+    border-radius: 999px; padding: 5px 12px;
+  }
+  .chip a { text-decoration: none; }
+  .chip a:hover { text-decoration: underline; }
+
+  section { margin: 44px 0 0; }
+  h2 { font-size: 20px; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .sub { color: var(--ink-2); font-size: 14px; margin: 0 0 18px; max-width: 72ch; }
+
+  /* Skills */
+  .skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+  .skill {
+    background: var(--surface); border: 1px solid var(--ring); border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .skill .name { font-weight: 600; font-size: 14.5px; margin: 0 0 3px; }
+  .skill .detail { font-size: 13px; color: var(--ink-2); margin: 0; }
+
+  /* Projects */
+  .projects { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  .project {
+    display: block; text-decoration: none; color: inherit;
+    background: var(--surface); border: 1px solid var(--ring); border-radius: 12px;
+    padding: 20px 22px; transition: border-color 140ms ease, transform 140ms ease;
+  }
+  .project:hover, .project:focus-visible {
+    border-color: var(--accent); transform: translateY(-1px); outline: none;
+  }
+  .project .p-top { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+  .project h3 { margin: 0; font-size: 17px; letter-spacing: -0.01em; }
+  .project .status { font-size: 11.5px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--good); white-space: nowrap; }
+  .project .p-desc { margin: 8px 0 12px; font-size: 14px; color: var(--ink-2); max-width: 74ch; }
+  .project .tags { display: flex; gap: 7px; flex-wrap: wrap; }
+  .project .tag { font-size: 11.5px; color: var(--ink-2); background: var(--accent-wash); border-radius: 6px; padding: 3px 9px; }
+  .project .go { margin-top: 12px; font-size: 13.5px; font-weight: 600; color: var(--accent); }
+
+  /* How I work */
+  .how { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .how .item { background: var(--surface); border: 1px solid var(--ring); border-radius: 10px; padding: 16px 18px; }
+  .how .item h3 { margin: 0 0 5px; font-size: 14.5px; }
+  .how .item p { margin: 0; font-size: 13.5px; color: var(--ink-2); }
+
+  .prose p { color: var(--ink-2); max-width: 74ch; margin: 0 0 12px; }
+
+  .contact-row { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 6px; font-size: 15px; }
+  .contact-row a { text-decoration: none; font-weight: 600; }
+  .contact-row a:hover { text-decoration: underline; }
+
+  footer { margin-top: 52px; padding-top: 18px; border-top: 1px solid var(--grid); font-size: 13px; color: var(--muted); display: flex; gap: 18px; flex-wrap: wrap; }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+</style>
 </head>
-
 <body>
+<div class="wrap">
 
-  <!-- ***** Header ***** -->
-
-  <header class="header" role="banner" id="top">
-    <div class="row">
-      <nav class="nav" role="navigation">
-        <ul class="nav__items">
-          <li class="nav__item"><a href="#work" class="nav__link">Work</a></li>
-          <li class="nav__item"><a href="#clients" class="nav__link">Clients</a></li>
-          <li class="nav__item">
-            <a href="#about" class="nav__link">About</a>
-          </li>
-          <li class="nav__item">
-            <a href="#contact" class="nav__link">Contact</a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-    <div class="header__text-box row">
-      <div class="header__text">
-        <h1 class="heading-primary">
-          <!-- Replace the following name with your name -->
-          <span>Syed Ali Hussnain</span>
-        </h1>
-        <!-- Put a small paragraph about yourself -->
-        <p>A Web Developer based in Lahore, Pakistan.</p>
-        <a href="#contact" class="btn btn--pink">Get in touch</a>
-      </div>
+  <header class="masthead">
+    <p class="eyebrow">CRM / Revenue Operations &amp; Data Quality</p>
+    <h1>Fabian Nevarez</h1>
+    <p class="lede">
+      A practical operator-analyst. I turn messy processes into documented, measurable systems —
+      hands-on with CRM operations, Salesforce data quality, and pipeline management, and I validate
+      every number against the source records before it drives a decision.
+    </p>
+    <div class="chips">
+      <span class="chip">Chicago, IL</span>
+      <span class="chip">Open to remote / hybrid</span>
+      <span class="chip">B.A. Economics — UIUC</span>
+      <span class="chip"><a href="mailto:armaninevarez9@gmail.com">armaninevarez9@gmail.com</a></span>
+      <span class="chip"><a href="https://github.com/futureinvestor9" rel="noopener">github.com/futureinvestor9</a></span>
+      <span class="chip"><a href="https://www.linkedin.com/in/fabianarmaninevarez/" rel="noopener">LinkedIn</a></span>
     </div>
   </header>
 
-  <main role="main">
-
-    <!-- ***** Work ***** -->
-
-    <section class="work" id="work">
-      <div class="row">
-        <h2>My Work</h2>
-        <div class="work__boxes">
-
-          <!-- Each div with the work__box class is a project. -->
-
-          <div class="work__box">
-            <div class="work__text">
-              <h3>Portfolio Template</h3>
-              <p>
-                A free Open Source Portfolio for anyone to use for free.
-              </p>
-              <ul class="work__list">
-                <li>HTML</li>
-                <li>SCSS</li>
-                <li>JavaScript</li>
-                <li>Parcel</li>
-              </ul>
-
-              <div class="work__links">
-                <a href="https://nisar.surge.sh" target="_blank" class="link__text">
-                  Visit Site <span>&rarr;</span>
-                </a>
-                <a href="https://github.com/nisarhassan12/portfolio" title="View Source Code" target="_blank">
-                  <img src="./images/github.svg" class="work__code" alt="GitHub">
-                </a>
-              </div>
-            </div>
-            <div class="work__image-box">
-              <img src="./images/project-1.png" class="work__image" alt="Project 1" />
-            </div>
-          </div>
-
-          <div class="work__box">
-            <div class="work__text">
-              <h3>Calculator</h3>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod,
-                eius.
-              </p>
-              <ul class="work__list">
-                <li>React</li>
-                <li>Next.js</li>
-                <li>Node</li>
-                <li>MongoDB</li>
-              </ul>
-
-              <div class="work__links">
-                <a href="#" class="link__text">
-                  Visit Site <span>&rarr;</span>
-                </a>
-                <a href="#">
-                  <img src="./images/github.svg" class="work__code" title="View Source Code" alt="GitHub">
-                </a>
-              </div>
-            </div>
-            <div class="work__image-box">
-              <img src="./images/project-2.png" class="work__image" alt="Project 1" />
-            </div>
-          </div>
-
-          <div class="work__box">
-            <div class="work__text">
-              <h3>Notificator</h3>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod,
-                eius.
-              </p>
-              <ul class="work__list">
-                <li>React</li>
-                <li>Next.js</li>
-                <li>Node</li>
-                <li>MongoDB</li>
-              </ul>
-
-              <div class="work__links">
-                <a href="#" class="link__text">
-                  Visit Site <span>&rarr;</span>
-                </a>
-                <a href="#">
-                  <img src="./images/github.svg" class="work__code" title="View Source Code" alt="GitHub">
-                </a>
-              </div>
-            </div>
-            <div class="work__image-box">
-              <img src="./images/project-3.png" class="work__image" alt="Project 3" />
-            </div>
-          </div>
-        </div>
+  <section aria-label="Skills">
+    <h2>What I work with</h2>
+    <p class="sub">The tools and disciplines I use day to day, described at the level I actually operate.</p>
+    <div class="skills">
+      <div class="skill">
+        <p class="name">Excel &amp; Google Sheets</p>
+        <p class="detail">Advanced — pivot tables, XLOOKUP, multi-source reconciliation, dashboards.</p>
       </div>
-    </section>
-
-    <!-- ***** Clients ***** -->
-
-    <section class="client" id="clients">
-      <div class="row">
-        <h2>Clients</h2>
-        <div class="client__logos">
-          <!-- Add logos of the clients or companies you'have worked with. -->
-          <img src="./images/ronjones.png" class="client__logo" alt="Company 2" />
-          <img src="./images/goldengrid.png" class="client__logo" alt="Company 3" />
-          <img src="./images/bullseye.png" class="client__logo" alt="Company 1" />
-          <img src="./images/mighty-furnitures.png" class="client__logo" alt="Company 1" />
-          <img src="./images/fastlane.png" class="client__logo" alt="Company 3" />
-          <img src="./images/chippy.png" class="client__logo" alt="Company 1" />
-        </div>
+      <div class="skill">
+        <p class="name">CRM operations</p>
+        <p class="detail">Follow Up Boss administration; Salesforce data-quality &amp; operational support; cadence design.</p>
       </div>
-    </section>
-
-    <!-- ***** About ***** -->
-
-    <section class="about" id="about">
-      <div class="row">
-        <h2>About Me</h2>
-        <div class="about__content">
-          <div class="about__text">
-            <!-- Replace the below paragraph with info about yourself -->
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos id
-              nostrum illo harum blanditiis, tenetur eum suscipit cupiditate
-              in vel, ex quam quidem quos mollitia labore aut sunt eius
-              ratione molestiae fuga veniam facere similique voluptate.
-            </p>
-            <!-- Provide a link to your resume -->
-            <a href="#" class="btn">My Resume</a>
-          </div>
-
-          <div class="about__photo-container">
-            <!-- Add a nice photo of yourself -->
-            <img class="about__photo" src="./images/syed-ali-hussnain.jpg" alt="" />
-          </div>
-        </div>
+      <div class="skill">
+        <p class="name">Data quality &amp; governance</p>
+        <p class="detail">Record cleanup, accuracy audits, deduplication, and consistent data standards.</p>
       </div>
-    </section>
-  </main>
-
-  <!-- ***** Contact ***** -->
-
-  <section class="contact" id="contact">
-    <div class="row">
-      <h2>Get in Touch</h2>
-      <div class="contact__info">
-        <p>
-          Are you looking for a fast-performing and user-friendly website to
-          represent your product or business? or looking for any kind of
-          consultation? or want to ask questions? or have some advice for me
-          or just want to say "Hi 👋" in any case feel free to Let me know. I
-          will do my best to respond back. 😊 The quickest way to reach out to
-          me is via an email.
-        </p>
-        <!-- Replace the email with yours -->
-        <a href="mailto:you@example.com" class="btn">you@example.com</a>
+      <div class="skill">
+        <p class="name">SQL</p>
+        <p class="detail">Working knowledge — joins, filtering, aggregation. Actively building depth.</p>
+      </div>
+      <div class="skill">
+        <p class="name">AI-assisted analysis</p>
+        <p class="detail">Using Claude &amp; ChatGPT to structure analysis and draft logic — always validated against real data.</p>
+      </div>
+      <div class="skill">
+        <p class="name">Credentials</p>
+        <p class="detail">Google Data Analytics Certificate · Excel · B.A. Economics, University of Illinois.</p>
       </div>
     </div>
   </section>
 
-  <!-- ***** Footer ***** -->
+  <section aria-label="Projects">
+    <h2>Selected work</h2>
+    <p class="sub">Live, self-contained projects — each one is a real system I built and can walk through end to end.</p>
+    <div class="projects">
 
-  <footer role="contentinfo" class="footer">
-    <div class="row">
-      <!-- Update the links to point to your accounts -->
-      <ul class="footer__social-links">
-        <li class="footer__social-link-item">
-          <a href="https://twitter.com/nisarhassan12/" title="Link to Twitter Profile">
-            <img src="./images/twitter.svg" class="footer__social-image" alt="Twitter">
-          </a>
-        </li>
-        <li class="footer__social-link-item">
-          <a href="https://github.com/nisarhassan12/" title="Link to Github Profile">
-            <img src="./images/github.svg" class="footer__social-image" alt="Github">
-          </a>
-        </li>
-        <li class="footer__social-link-item">
-          <a href="https://codepen.io/nisar_hassan" title="Link to Codepen Profile">
-            <img src="./images/codepen.svg" class="footer__social-image" alt="Codepen">
-          </a>
-        </li>
-        <li class="footer__social-link-item">
-          <a href=https://www.linkedin.com/in/nisar-hassan-naqvi-413466199/">
-            <img src="./images/linkedin.svg" title="Link to Linkedin Profile" class="footer__social-image" alt="Linkedin">
-          </a>
-        </li>
-      </ul>
+      <a class="project" href="./rideshare-ops/">
+        <div class="p-top">
+          <h3>Rideshare Operations Intelligence</h3>
+          <span class="status">Live dashboard</span>
+        </div>
+        <p class="p-desc">
+          I treated my own Uber/Lyft driving like an operation to analyze: set a baseline, built
+          accept/reject decision rules from real trip data, and measured the result. Uber's official
+          tax records show earnings per mile climbing from $1.45 to $2.82 — nearly double per mile driven.
+        </p>
+        <div class="tags">
+          <span class="tag">Data analysis</span>
+          <span class="tag">Decision frameworks</span>
+          <span class="tag">Reconciliation</span>
+          <span class="tag">Reporting</span>
+        </div>
+        <div class="go">View the dashboard →</div>
+      </a>
 
-      <!-- If you give me some credit by keeping the below paragraph, will be huge for me 😊 Thanks. -->
-      <p>
-        &copy; 2020 - Template designed & developed by <a href="https://nisar.dev" class="link">Nisar</a>.
-      </p>
-      <div class="footer__github-buttons">
-        <iframe
-          src="https://ghbtns.com/github-btn.html?user=nisarhassan12&repo=portfolio-template&type=watch&count=true"
-          frameborder="0" scrolling="0" width="170" height="20" title="Watch Portfolio Template on GitHub">
-        </iframe>
+      <a class="project" href="./dtd-crm/">
+        <div class="p-top">
+          <h3>DTD — CRM Cadence Planner</h3>
+          <span class="status">Live app</span>
+        </div>
+        <p class="p-desc">
+          DTD4X is the quarterly follow-up system I designed and ran to keep a ~400-lead pipeline from
+          leaking — four deliberate touches per contact each quarter instead of memory-based follow-up.
+          I originally operated it in Follow Up Boss; this browser app rebuilds the system so you can
+          click through the cadence, contact records, per-quarter touch history, and CSV import/export.
+        </p>
+        <div class="tags">
+          <span class="tag">CRM operations</span>
+          <span class="tag">Cadence design</span>
+          <span class="tag">Pipeline management</span>
+          <span class="tag">Data modeling</span>
+        </div>
+        <div class="go">Open the app →</div>
+      </a>
+
+      <a class="project" href="./salesforce-data-quality/">
+        <div class="p-top">
+          <h3>Salesforce Data Quality @ JLL Technologies</h3>
+          <span class="status">Case study</span>
+        </div>
+        <p class="p-desc">
+          Operational CRM support at an enterprise scale: cleaning up Salesforce records, auditing them
+          for accuracy and consistency, and following governance standards so downstream reporting could
+          be trusted. A close look at the data-quality discipline behind reliable numbers.
+        </p>
+        <div class="tags">
+          <span class="tag">Data quality</span>
+          <span class="tag">Governance</span>
+          <span class="tag">Salesforce</span>
+          <span class="tag">Attention to detail</span>
+        </div>
+        <div class="go">Read the case study →</div>
+      </a>
+
+    </div>
+  </section>
+
+  <section aria-label="How I work">
+    <h2>How I work</h2>
+    <p class="sub">The same four habits show up in every project above — they're what an analyst role actually asks for.</p>
+    <div class="how">
+      <div class="item">
+        <h3>Define the metric that drives the decision</h3>
+        <p>I find the number that actually changes an outcome — earnings per mile, follow-up coverage — not the vanity metric that just looks good.</p>
+      </div>
+      <div class="item">
+        <h3>Validate every number against source records</h3>
+        <p>Nothing gets reported until it reconciles with the system of record. Two independent Lyft records agreeing within 5.6% is the standard, not the exception.</p>
+      </div>
+      <div class="item">
+        <h3>Design repeatable rules and processes</h3>
+        <p>A one-off answer isn't a system. I turn a decision into documented rules and a cadence anyone can run the same way twice.</p>
+      </div>
+      <div class="item">
+        <h3>Communicate for non-technical stakeholders</h3>
+        <p>The output is a clear story — a dashboard, a one-page case, a plain-English rule — that a hiring manager or teammate can act on without me in the room.</p>
       </div>
     </div>
+  </section>
+
+  <section class="prose" aria-label="About">
+    <h2>About</h2>
+    <p>
+      I'm an operator moving into analytics. My background is hands-on — CRM operations, pipeline
+      management, and the day-to-day data quality work that keeps a CRM trustworthy — and my degree
+      is in economics, so I'm comfortable reasoning about incentives and measurement.
+    </p>
+    <p>
+      What ties it together is a habit of treating everyday operations as data problems: establish a
+      baseline, build a rule, measure whether it worked, and document it so it holds up. The projects
+      on this page are that habit made concrete — real data, real systems, honest about their limits.
+      I'm looking for CRM / revenue operations and data quality / governance roles where that discipline
+      is the job.
+    </p>
+  </section>
+
+  <section aria-label="Contact">
+    <h2>Get in touch</h2>
+    <p class="sub">The fastest way to reach me is email.</p>
+    <div class="contact-row">
+      <a href="mailto:armaninevarez9@gmail.com">armaninevarez9@gmail.com</a>
+      <a href="https://github.com/futureinvestor9" rel="noopener">github.com/futureinvestor9</a>
+      <a href="https://www.linkedin.com/in/fabianarmaninevarez/" rel="noopener">LinkedIn</a>
+    </div>
+  </section>
+
+  <footer>
+    <span>Fabian Nevarez — operations &amp; data analysis portfolio</span>
+    <a href="https://github.com/futureinvestor9" rel="noopener">GitHub</a>
+    <a href="https://www.linkedin.com/in/fabianarmaninevarez/" rel="noopener">LinkedIn</a>
   </footer>
-
-  <a href="#top" class="back-to-top" title="Back to Top">
-    <img src="./images/arrow-up.svg" alt="Back to Top" class="back-to-top__image"/>
-  </a>
-  <script src="./index.js"></script>
+</div>
 </body>
-
 </html>
