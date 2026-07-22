@@ -156,8 +156,9 @@
     <p class="lede">
       I drove full-time for Uber and Lyft with no objective way to know which trips were worth
       accepting — so I treated my own operation like an analyst would: established a baseline,
-      built decision rules from real trip data, and measured the result. Hourly earnings rose
-      ~35% against the pre-system benchmark, while a per-mile floor cut unpaid wear on the vehicle.
+      built decision rules from real trip data, and measured the result. Uber's own tax records
+      show earnings per mile climbing from $1.45 to $2.82 as the system took hold — nearly double
+      the pay for every mile put on the car.
     </p>
     <p class="byline">
       Fabian Nevarez · Chicago · Sep 2025 – Jul 2026 ·
@@ -168,25 +169,47 @@
   <section aria-label="Headline results">
     <div class="kpis">
       <div class="tile">
-        <p class="label">Validated hourly baseline, with trip filter</p>
-        <div class="value hero">$32.96<span class="unit">/hr</span></div>
-        <p class="delta"><span class="up">▲ 35%</span> vs. $24.42/hr pre-system benchmark</p>
+        <p class="label">Uber earnings per mile (official tax records)</p>
+        <div class="value hero">$1.45<span class="unit"> → </span>$2.82</div>
+        <p class="delta"><span class="up">▲ 94%</span> per mile, March → June 2026</p>
       </div>
       <div class="tile">
-        <p class="label">Per-mile accept floor</p>
-        <div class="value">$2.00<span class="unit">/mi</span></div>
-        <p class="delta">vs. $1.81/mi average when accepting unfiltered</p>
+        <p class="label">Uber gross earnings, 2026 (Mar–Jun)</p>
+        <div class="value">$31,285</div>
+        <p class="delta">1,245 trips · 12,796 online miles</p>
       </div>
       <div class="tile">
-        <p class="label">Trips logged &amp; analyzed to build the filter</p>
-        <div class="value">75+</div>
-        <p class="delta">$1,946.53 over 59.1 tracked online hours</p>
+        <p class="label">Miles driven per trip</p>
+        <div class="value">15.2<span class="unit"> → </span>8.9</div>
+        <p class="delta"><span class="up">▼ 41%</span> less wear per trip on the car</p>
       </div>
       <div class="tile">
-        <p class="label">Trips completed in 2025</p>
-        <div class="value">1,266</div>
-        <p class="delta">650 five-star trips · Blue Uber Pro status</p>
+        <p class="label">Uber gross earnings, 2025 (1099-K)</p>
+        <div class="value">$24,024</div>
+        <p class="delta">1,302 trips · Aug–Dec ramp</p>
       </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Earnings per mile nearly doubled as the system took hold</h2>
+    <p class="sub">Gross Uber earnings ÷ online miles, by month, straight from Uber's official Tax
+       Summaries. The multi-app trip filter (Mystro + Gridwise) went live April 15, 2026 — and every
+       month after, more dollars came off each mile driven.</p>
+    <div class="card">
+      <figure aria-label="Column chart of Uber dollars per mile: March $1.45, April $2.03, May $2.58, June $2.82">
+        <div class="chart-scroll"><div id="chart-permile"></div></div>
+      </figure>
+      <p class="chart-note">Fewer miles for more money is the whole point: it lifts hourly earnings
+         and cuts fuel, maintenance, and depreciation at the same time. Miles per trip fell from
+         15.2 (March) to 8.9 (June).</p>
+      <details class="tableview">
+        <summary>View as table</summary>
+        <table id="table-permile">
+          <thead><tr><th scope="col">Month</th><th scope="col" class="num">Trips</th><th scope="col" class="num">Online miles</th><th scope="col" class="num">Gross</th><th scope="col" class="num">$/mile</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </details>
     </div>
   </section>
 
@@ -281,9 +304,9 @@
 
   <section>
     <h2>The rate shift</h2>
-    <p class="sub">Unfiltered operating benchmark (fall 2025, Uber monthly recap) versus the
-       validated baseline after the trip filter (75-trip tracked sample). Sources differ and are
-       described in the methodology below.</p>
+    <p class="sub">Two ways the same shift shows up. Hourly: the fall-2025 operating benchmark
+       ($24.42/hr) versus the validated post-filter baseline ($32.96/hr). Per-mile: Uber's official
+       monthly tax records, March versus June 2026.</p>
     <div class="card">
       <figure aria-label="Dumbbell chart: dollars per hour improved from 24.42 to 32.96; dollars per mile floor moved from 1.81 average to a 2.00 accept minimum">
         <div class="chart-scroll"><div id="chart-dumbbell"></div></div>
@@ -310,14 +333,14 @@
        and depreciation, so the filter optimizes revenue per mile — not just per hour.</p>
     <div class="kpis">
       <div class="tile">
-        <p class="label">Miles driven per $100 earned, unfiltered (fall 2025)</p>
-        <div class="value">55.2<span class="unit"> mi</span></div>
-        <p class="delta">2,671 miles for $4,835.44 in one month</p>
+        <p class="label">Uber miles driven per $100 earned — March (pre-system)</p>
+        <div class="value">68.9<span class="unit"> mi</span></div>
+        <p class="delta">913 miles for $1,324.20 gross</p>
       </div>
       <div class="tile">
-        <p class="label">Miles per $100 at the accept floor</p>
-        <div class="value">≤50<span class="unit"> mi</span></div>
-        <p class="delta"><span class="up">▼ ~10%</span> fewer miles for the same revenue at $2.00+/mi</p>
+        <p class="label">Uber miles per $100 earned — June (with filter)</p>
+        <div class="value">35.5<span class="unit"> mi</span></div>
+        <p class="delta"><span class="up">▼ 48%</span> fewer miles for every $100 — official tax records</p>
       </div>
       <div class="tile">
         <p class="label">Lyft payout rate after the system</p>
@@ -333,9 +356,14 @@
       <li><strong>Lyft payouts:</strong> 73 dated Lyft Direct (Payfare) transfer records,
           September 2025 – July 2026, aggregated by month. These are take-home deposit transfers,
           not gross fares; timing of a transfer can lag the rides that earned it.</li>
+      <li><strong>Uber earnings &amp; mileage (primary):</strong> Uber's official <strong>Tax Summaries</strong>
+          (Mar–Jun 2026) and <strong>2025 1099-K</strong>. Per month: gross earnings, online miles, and completed
+          trips — e.g. May 2026: 481 trips, 5,123 miles, $13,235.22 gross. Dollars-per-mile is computed
+          directly from these official figures ($1.45 → $2.03 → $2.58 → $2.82). 2025 gross per the 1099-K was
+          $24,024.49 across 1,302 trips.</li>
       <li><strong>Pre-system benchmark:</strong> Uber's monthly driver recap (fall 2025):
-          $4,835.44 earned over 198 online hours and 2,671 miles ($24.42/hr, $1.81/mi), 23%
-          acceptance rate. Uber notes recap figures are directional, not an official pay statement.</li>
+          $4,835.44 over 198 online hours ($24.42/hr) — used only for the hourly benchmark, since the tax
+          summaries report miles and trips but not online hours.</li>
       <li><strong>Validated baseline:</strong> personal trip log of 75+ trips — $1,946.53 across
           59.1 tracked online hours ($32.96/hr gross), built in Excel/Google Sheets with
           Mystro and Gridwise operating data.</li>
@@ -348,10 +376,10 @@
       <li><strong>Cross-source check:</strong> Lyft's stated May net ($115.80) and the May total
           from the independent payout records ($122.34) agree within 5.6% — two records that don't
           reference each other, pointing to the same number.</li>
-      <li><strong>What isn't shown, and why:</strong> Uber, Lyft, and Mystro don't export trip data,
-          so per-trip miles and accept/decline counts can't be reproduced here. The three-tier filter
-          is shown as its documented rules, and the $/hour and $/mile figures are the validated
-          75-trip sample — not extrapolated to every trip.</li>
+      <li><strong>What isn't shown, and why:</strong> Uber, Lyft, and Mystro don't export individual
+          trip logs, so per-trip scatter and accept/decline counts can't be reproduced here — the
+          three-tier filter is shown as its documented rules. The monthly $/mile figures, however, are
+          real and official (Uber Tax Summaries), not estimated.</li>
       <li><strong>AI-assisted, human-validated:</strong> Claude and ChatGPT were used to structure
           the analysis and draft threshold candidates; no rule was adopted until it was
           cross-checked against actual earnings outcomes.</li>
@@ -399,6 +427,13 @@
     { w: "Jun 26", v: 35, post: true },
     { w: "Jul 3",  v: 12, post: true },
     { w: "Jul 10", v: 15, post: true }
+  ];
+
+  var UBER = [
+    { m: "Mar ’26", trips: 60,  miles: 913,  gross: 1324.20,  pm: 1.45, post: false },
+    { m: "Apr ’26", trips: 274, miles: 2933, gross: 5943.45,  pm: 2.03, post: true, adopt: true },
+    { m: "May ’26", trips: 481, miles: 5123, gross: 13235.22, pm: 2.58, post: true },
+    { m: "Jun ’26", trips: 430, miles: 3827, gross: 10782.16, pm: 2.82, post: true }
   ];
 
   var css = getComputedStyle(document.documentElement);
@@ -528,10 +563,10 @@
     var host = document.getElementById("chart-dumbbell");
     host.innerHTML = "";
     var rows = [
-      { label: "Earnings per hour", from: 24.42, to: 32.96, min: 20, max: 38,
+      { label: "Hourly earnings", from: 24.42, to: 32.96, min: 20, max: 38,
         fromTxt: "$24.42", toTxt: "$32.96", note: "+35%" },
-      { label: "Earnings per mile", from: 1.81, to: 2.00, min: 1.5, max: 2.3,
-        fromTxt: "$1.81 avg", toTxt: "$2.00+ floor", note: "accept minimum" }
+      { label: "Per-mile (Uber)", from: 1.45, to: 2.82, min: 1.2, max: 3.0,
+        fromTxt: "$1.45 (Mar)", toTxt: "$2.82 (Jun)", note: "+94%, official records" }
     ];
     var W = 900, rowH = 74, padL = 170, padR = 120, H = rowH * rows.length + 10;
     var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, width: "100%", role: "img",
@@ -704,7 +739,94 @@
     host.appendChild(svg);
   }
 
-  function drawAll() { drawMonthly(); drawRides(); drawDumbbell(); drawFilter(); }
+  /* ---------- Uber $/mile trend ---------- */
+  function drawPerMile() {
+    var host = document.getElementById("chart-permile");
+    if (!host) return;
+    host.innerHTML = "";
+    var W = 900, H = 300, padL = 46, padR = 14, padT = 40, padB = 34;
+    var innerW = W - padL - padR, innerH = H - padT - padB;
+    var maxV = 3, ticks = [0, 1, 2, 3];
+    var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, width: "100%", role: "img",
+      "aria-label": "Uber dollars per mile by month" });
+    svg.style.minWidth = "560px";
+    var baseY = padT + innerH;
+
+    ticks.forEach(function (t) {
+      var y = padT + innerH - (t / maxV) * innerH;
+      if (t > 0) svg.appendChild(svgEl("line", { x1: padL, x2: W - padR, y1: y, y2: y,
+        stroke: tok("--grid"), "stroke-width": 1 }));
+      var lbl = svgEl("text", { x: padL - 8, y: y + 4, "text-anchor": "end",
+        "font-size": 11, fill: tok("--muted") });
+      lbl.style.fontVariantNumeric = "tabular-nums";
+      lbl.textContent = t === 0 ? "0" : "$" + t;
+      svg.appendChild(lbl);
+    });
+
+    var slot = innerW / UBER.length;
+    var barW = Math.min(64, slot - 40);
+    UBER.forEach(function (d, i) {
+      var x = padL + slot * i + (slot - barW) / 2;
+      var hpx = (d.pm / maxV) * innerH;
+      var y = baseY - hpx;
+      var color = d.post ? tok("--accent") : tok("--pre");
+      var r = Math.min(4, hpx);
+      var path = "M" + x + "," + baseY + " L" + x + "," + (y + r) +
+        " Q" + x + "," + y + " " + (x + r) + "," + y +
+        " L" + (x + barW - r) + "," + y +
+        " Q" + (x + barW) + "," + y + " " + (x + barW) + "," + (y + r) +
+        " L" + (x + barW) + "," + baseY + " Z";
+      svg.appendChild(svgEl("path", { d: path, fill: color, "class": "bar" }));
+
+      var hit = svgEl("rect", { x: padL + slot * i, y: padT, width: slot, height: innerH, fill: "transparent" });
+      hit.addEventListener("mousemove", function (ev) {
+        var tag = d.adopt ? " · system adopted this month" : "";
+        showTip("<span class='t-title'>" + d.m + "</span><br><span class='t-val'>$" +
+          d.pm.toFixed(2) + "/mi</span>" + tag + "<br>" + d.trips + " trips · " +
+          d.miles.toLocaleString("en-US") + " mi · " + fmtUSD(d.gross), ev.clientX, ev.clientY);
+      });
+      hit.addEventListener("mouseleave", hideTip);
+      svg.appendChild(hit);
+
+      var ml = svgEl("text", { x: padL + slot * i + slot / 2, y: baseY + 18,
+        "text-anchor": "middle", "font-size": 11.5, fill: tok("--muted") });
+      ml.textContent = d.m;
+      svg.appendChild(ml);
+      var vl = svgEl("text", { x: x + barW / 2, y: y - 8, "text-anchor": "middle",
+        "font-size": 13, "font-weight": 650, fill: tok("--ink") });
+      vl.style.fontVariantNumeric = "tabular-nums";
+      vl.textContent = "$" + d.pm.toFixed(2);
+      svg.appendChild(vl);
+
+      if (d.adopt) {
+        var ax = padL + slot * i + slot / 2;
+        var mk = svgEl("text", { x: ax, y: padT - 20, "text-anchor": "middle",
+          "font-size": 11.5, "font-weight": 600, fill: tok("--ink-2") });
+        mk.textContent = "▲ trip filter live";
+        svg.appendChild(mk);
+        svg.appendChild(svgEl("line", { x1: ax, x2: ax, y1: padT - 14, y2: y - 20,
+          stroke: tok("--baseline"), "stroke-width": 1 }));
+      }
+    });
+
+    svg.appendChild(svgEl("line", { x1: padL, x2: W - padR, y1: baseY, y2: baseY,
+      stroke: tok("--baseline"), "stroke-width": 1 }));
+    host.appendChild(svg);
+
+    var tb = document.querySelector("#table-permile tbody");
+    if (tb) {
+      tb.innerHTML = "";
+      UBER.forEach(function (d) {
+        var tr = document.createElement("tr");
+        tr.innerHTML = "<td>" + d.m + "</td><td class='num'>" + d.trips + "</td><td class='num'>" +
+          d.miles.toLocaleString("en-US") + "</td><td class='num'>" + fmtUSD(d.gross) +
+          "</td><td class='num'>$" + d.pm.toFixed(2) + "</td>";
+        tb.appendChild(tr);
+      });
+    }
+  }
+
+  function drawAll() { drawPerMile(); drawMonthly(); drawRides(); drawDumbbell(); drawFilter(); }
   drawAll();
 
   var mq = window.matchMedia("(prefers-color-scheme: dark)");
