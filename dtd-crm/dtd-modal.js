@@ -77,6 +77,10 @@
     var contact = DTD.getContactById(contactId);
     if (!contact) return;
 
+    // Track the open contact so actions inside the modal (e.g. Print Card,
+    // opened from Dashboard/This Week) resolve to the right person.
+    DTD.state.currentContactId = contactId;
+
     var info   = DTD.getCurrentQuarterInfo();
     var status = DTD.getTouchStatus(contactId, info.quarter, info.year);
     var isDone = status[type];
@@ -203,10 +207,23 @@
 
   function buildSocialBody(contact) {
     var action = DTD.buildSocialAction(contact);
+    var email  = DTD.buildEmailAction(contact);
     var html   = '';
     var links  = action.links;
 
     var hasLinks = Object.keys(links).length > 0;
+    var hasEmail = !!email.url;
+
+    // Email is part of this touch (the "Email / Social" slot) — surface it so
+    // a contact with an email but no social handles still has an action.
+    if (hasEmail) {
+      html += '<a class="modal-action-btn" href="' + DTD.escHtml(email.url) + '">';
+      html += '  <span style="color:var(--social-color)">' + DTD.ICONS.card + '</span>';
+      html += '  <span class="modal-action-btn__text">Email ' + DTD.escHtml(contact.firstName) + '</span>';
+      html += '  <span class="modal-action-btn__sub">' + DTD.escHtml(contact.email) + '</span>';
+      html += '</a>';
+    }
+
     if (hasLinks) {
       html += '<div class="modal-social-links">';
       Object.keys(links).forEach(function (platform) {
@@ -218,8 +235,10 @@
         html += '</a>';
       });
       html += '</div>';
-    } else {
-      html += '<p style="color:var(--text-muted);font-size:1.3rem;margin-bottom:10px">No social handles on file.</p>';
+    }
+
+    if (!hasLinks && !hasEmail) {
+      html += '<p style="color:var(--text-muted);font-size:1.3rem;margin-bottom:10px">No email or social handles on file.</p>';
     }
 
     html += '<div style="font-size:1.2rem;color:var(--text-muted);margin-bottom:6px">COPY MESSAGE</div>';

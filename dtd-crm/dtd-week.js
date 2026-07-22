@@ -38,10 +38,12 @@
     // Start date of the quarter we're currently in
     var quarterStart = new Date(startDate.getTime() + quartersElapsed * 13 * 7 * msPerDay);
 
-    // Derive quarter number from that month (1-3=Q1, 4-6=Q2, 7-9=Q3, 10-12=Q4)
-    var startMonth = quarterStart.getMonth() + 1; // 1-indexed
-    var quarter    = Math.ceil(startMonth / 3);
-    var year       = quarterStart.getFullYear();
+    // Label cycles sequentially from the user's start date (Q1→Q4, then year+1)
+    // rather than from the calendar month. Two 13-week blocks can fall in the
+    // same calendar quarter; since touch status is keyed by quarter+year, a
+    // calendar label would collide and stop progress from resetting each cycle.
+    var quarter = (quartersElapsed % 4) + 1;
+    var year    = startDate.getFullYear() + Math.floor(quartersElapsed / 4);
 
     // Week window dates
     var weekOffset    = (weekNum - 1) * 7;

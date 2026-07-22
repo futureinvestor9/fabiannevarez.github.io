@@ -81,6 +81,7 @@
   // ── Export ────────────────────────────────────
 
   var CONTACT_FIELDS = [
+    'id',
     'firstName','lastName','phone','email',
     'instagram','linkedin','facebook','twitter',
     'address','notes','createdAt'
