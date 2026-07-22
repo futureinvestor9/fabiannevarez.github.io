@@ -21,13 +21,15 @@
     var settings = DTD.getSettings();
     var startStr = settings.quarterStartDate || DTD.DEFAULT_SETTINGS.quarterStartDate;
 
-    var startDate = new Date(startStr + 'T00:00:00');
-    var today     = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    // Number of full days elapsed since the original quarter start
+    // Count elapsed days in pure calendar time via UTC components. Subtracting
+    // local-midnight timestamps would undercount across a DST spring-forward
+    // (that day is only 23h), shifting the week/quarter boundary by a day.
     var msPerDay  = 86400000;
-    var daysElapsed = Math.max(0, Math.floor((today - startDate) / msPerDay));
+    var sp        = startStr.split('-');
+    var startUTC  = Date.UTC(+sp[0], (+sp[1]) - 1, +sp[2]);
+    var now       = new Date();
+    var todayUTC  = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+    var daysElapsed = Math.max(0, Math.round((todayUTC - startUTC) / msPerDay));
 
     // Roll forward in 13-week quarter blocks instead of clamping at week 13,
     // so the cadence keeps advancing (and progress resets) each new quarter.
@@ -35,29 +37,29 @@
     var quartersElapsed = Math.floor(weeksElapsed / 13);
     var weekNum         = (weeksElapsed % 13) + 1;        // 1..13
 
-    // Start date of the quarter we're currently in
-    var quarterStart = new Date(startDate.getTime() + quartersElapsed * 13 * 7 * msPerDay);
+    // Start of the quarter we're currently in (UTC ms — DST-independent)
+    var quarterStartMs = startUTC + quartersElapsed * 13 * 7 * msPerDay;
 
     // Label cycles sequentially from the user's start date (Q1→Q4, then year+1)
     // rather than from the calendar month. Two 13-week blocks can fall in the
     // same calendar quarter; since touch status is keyed by quarter+year, a
     // calendar label would collide and stop progress from resetting each cycle.
     var quarter = (quartersElapsed % 4) + 1;
-    var year    = startDate.getFullYear() + Math.floor(quartersElapsed / 4);
+    var year    = (+sp[0]) + Math.floor(quartersElapsed / 4);
 
     // Week window dates
-    var weekOffset    = (weekNum - 1) * 7;
-    var weekStartDate = new Date(quarterStart.getTime() + weekOffset * msPerDay);
-    var weekEndDate   = new Date(weekStartDate.getTime() + 6 * msPerDay);
+    var weekOffset  = (weekNum - 1) * 7;
+    var weekStartMs = quarterStartMs + weekOffset * msPerDay;
+    var weekEndMs   = weekStartMs + 6 * msPerDay;
 
     return {
       quarter:          quarter,
       year:             year,
       weekNum:          weekNum,
       weekRotation:     DTD.WEEK_ROTATION[weekNum - 1],
-      quarterStartDate: quarterStart.toISOString().slice(0, 10),
-      weekStartDate:    weekStartDate.toISOString().slice(0, 10),
-      weekEndDate:      weekEndDate.toISOString().slice(0, 10)
+      quarterStartDate: new Date(quarterStartMs).toISOString().slice(0, 10),
+      weekStartDate:    new Date(weekStartMs).toISOString().slice(0, 10),
+      weekEndDate:      new Date(weekEndMs).toISOString().slice(0, 10)
     };
   };
 
