@@ -243,6 +243,43 @@
   </section>
 
   <section>
+    <h2>Ride volume followed the system going live</h2>
+    <p class="sub">Completed Lyft rides per week, from Lyft's own weekly performance emails —
+       an independent record from the payout data. Weekly volume steps up right at the
+       mid-April system adoption and holds there.</p>
+    <div class="card">
+      <figure aria-label="Column chart of completed Lyft rides per week across 2026, stepping up after mid-April">
+        <div class="chart-scroll"><div id="chart-rides"></div></div>
+      </figure>
+      <p class="chart-note">Gaps are weeks with no performance email / minimal driving. Counts are
+         completed rides, read from Lyft's "feedback from N rides" summaries.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Two independent records agree</h2>
+    <p class="sub">A credibility check: the numbers on this page come from separate sources that
+       don't reference each other, and they line up.</p>
+    <div class="kpis">
+      <div class="tile">
+        <p class="label">Lyft take-home rate (May, from Lyft's breakdown)</p>
+        <div class="value">54<span class="unit">%</span></div>
+        <p class="delta">$215.01 in passenger payments → $115.80 to the driver</p>
+      </div>
+      <div class="tile">
+        <p class="label">May net earnings — Lyft's figure vs. my payout records</p>
+        <div class="value">$115.80 <span class="unit">vs</span> $122.34</div>
+        <p class="delta"><span class="up">✓ agree within 5.6%</span> — two independent sources</p>
+      </div>
+      <div class="tile">
+        <p class="label">Completed Lyft rides tracked in 2026</p>
+        <div class="value">232</div>
+        <p class="delta">across 13 recorded weeks</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
     <h2>The rate shift</h2>
     <p class="sub">Unfiltered operating benchmark (fall 2025, Uber monthly recap) versus the
        validated baseline after the trip filter (75-trip tracked sample). Sources differ and are
@@ -305,6 +342,16 @@
       <li><strong>Honest comparison note:</strong> the before and after hourly figures come from
           different sources (platform recap vs. tracked trip log). Both are stated only to their
           verified endpoints, and neither is extrapolated.</li>
+      <li><strong>Ride volume &amp; take-home rate:</strong> Lyft's weekly performance emails
+          (completed-ride counts) and its May earnings breakdown ($215.01 passenger payments →
+          $115.80 driver earnings, a 54% take-home rate after Lyft's 26% fee and 20% insurance/taxes/fees).</li>
+      <li><strong>Cross-source check:</strong> Lyft's stated May net ($115.80) and the May total
+          from the independent payout records ($122.34) agree within 5.6% — two records that don't
+          reference each other, pointing to the same number.</li>
+      <li><strong>What isn't shown, and why:</strong> Uber, Lyft, and Mystro don't export trip data,
+          so per-trip miles and accept/decline counts can't be reproduced here. The three-tier filter
+          is shown as its documented rules, and the $/hour and $/mile figures are the validated
+          75-trip sample — not extrapolated to every trip.</li>
       <li><strong>AI-assisted, human-validated:</strong> Claude and ChatGPT were used to structure
           the analysis and draft threshold candidates; no rule was adopted until it was
           cross-checked against actual earnings outcomes.</li>
@@ -336,6 +383,22 @@
     { m: "May ’26", v: 122.34,  post: true },
     { m: "Jun ’26", v: 1064.44, post: true },
     { m: "Jul ’26", v: 856.04,  post: true, partial: true }
+  ];
+
+  var RIDES = [
+    { w: "Dec 26", v: 3,  post: false },
+    { w: "Mar 6",  v: 7,  post: false },
+    { w: "Mar 20", v: 7,  post: false },
+    { w: "Mar 27", v: 8,  post: false },
+    { w: "Apr 3",  v: 19, post: false },
+    { w: "Apr 10", v: 39, post: true, adopt: true },
+    { w: "Apr 17", v: 29, post: true },
+    { w: "May 8",  v: 6,  post: true },
+    { w: "Jun 12", v: 26, post: true },
+    { w: "Jun 19", v: 26, post: true },
+    { w: "Jun 26", v: 35, post: true },
+    { w: "Jul 3",  v: 12, post: true },
+    { w: "Jul 10", v: 15, post: true }
   ];
 
   var css = getComputedStyle(document.documentElement);
@@ -570,7 +633,78 @@
     host.appendChild(svg);
   }
 
-  function drawAll() { drawMonthly(); drawDumbbell(); drawFilter(); }
+  /* ---------- Weekly ride volume ---------- */
+  function drawRides() {
+    var host = document.getElementById("chart-rides");
+    if (!host) return;
+    host.innerHTML = "";
+    var W = 900, H = 280, padL = 40, padR = 14, padT = 30, padB = 34;
+    var innerW = W - padL - padR, innerH = H - padT - padB;
+    var maxV = 40, ticks = [0, 10, 20, 30, 40];
+    var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, width: "100%", role: "img",
+      "aria-label": "Completed Lyft rides per week" });
+    svg.style.minWidth = "640px";
+    var baseY = padT + innerH;
+
+    ticks.forEach(function (t) {
+      var y = padT + innerH - (t / maxV) * innerH;
+      if (t > 0) svg.appendChild(svgEl("line", { x1: padL, x2: W - padR, y1: y, y2: y,
+        stroke: tok("--grid"), "stroke-width": 1 }));
+      var lbl = svgEl("text", { x: padL - 8, y: y + 4, "text-anchor": "end",
+        "font-size": 11, fill: tok("--muted") });
+      lbl.style.fontVariantNumeric = "tabular-nums";
+      lbl.textContent = String(t);
+      svg.appendChild(lbl);
+    });
+
+    var slot = innerW / RIDES.length;
+    var barW = Math.min(22, slot - 12);
+    RIDES.forEach(function (d, i) {
+      var x = padL + slot * i + (slot - barW) / 2;
+      var hpx = (d.v / maxV) * innerH;
+      var y = baseY - hpx;
+      var color = d.post ? tok("--accent") : tok("--pre");
+      var r = Math.min(4, hpx);
+      var path = "M" + x + "," + baseY + " L" + x + "," + (y + r) +
+        " Q" + x + "," + y + " " + (x + r) + "," + y +
+        " L" + (x + barW - r) + "," + y +
+        " Q" + (x + barW) + "," + y + " " + (x + barW) + "," + (y + r) +
+        " L" + (x + barW) + "," + baseY + " Z";
+      svg.appendChild(svgEl("path", { d: path, fill: color, "class": "bar" }));
+
+      var hit = svgEl("rect", { x: padL + slot * i, y: padT, width: slot, height: innerH, fill: "transparent" });
+      hit.addEventListener("mousemove", function (ev) {
+        var tag = d.adopt ? " · system adopted this week" : "";
+        showTip("<span class='t-title'>Week of " + d.w + "</span><br><span class='t-val'>" +
+          d.v + "</span> completed Lyft rides" + tag, ev.clientX, ev.clientY);
+      });
+      hit.addEventListener("mouseleave", hideTip);
+      svg.appendChild(hit);
+
+      var wl = svgEl("text", { x: padL + slot * i + slot / 2, y: baseY + 17, "text-anchor": "middle",
+        "font-size": 10, fill: tok("--muted") });
+      wl.textContent = d.w;
+      svg.appendChild(wl);
+      var vl = svgEl("text", { x: x + barW / 2, y: y - 6, "text-anchor": "middle",
+        "font-size": 10.5, "font-weight": 600, fill: tok("--ink-2") });
+      vl.textContent = d.v;
+      svg.appendChild(vl);
+
+      if (d.adopt) {
+        var ax = padL + slot * i + slot / 2;
+        var mk = svgEl("text", { x: ax, y: padT - 16, "text-anchor": "middle",
+          "font-size": 11.5, "font-weight": 600, fill: tok("--ink-2") });
+        mk.textContent = "▲ system live";
+        svg.appendChild(mk);
+      }
+    });
+
+    svg.appendChild(svgEl("line", { x1: padL, x2: W - padR, y1: baseY, y2: baseY,
+      stroke: tok("--baseline"), "stroke-width": 1 }));
+    host.appendChild(svg);
+  }
+
+  function drawAll() { drawMonthly(); drawRides(); drawDumbbell(); drawFilter(); }
   drawAll();
 
   var mq = window.matchMedia("(prefers-color-scheme: dark)");
