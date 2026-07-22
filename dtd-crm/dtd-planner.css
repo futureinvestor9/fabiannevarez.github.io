@@ -318,6 +318,12 @@ a { color: inherit; text-decoration: none; }
   position: absolute;
 }
 
+/* The touch this contact is due for this week — the one that counts */
+.touch-btn.due {
+  background: rgba(255, 50, 88, 0.12);
+  box-shadow: inset 0 -3px 0 0 var(--pink);
+}
+
 /* Touch section wrappers (in modal) */
 .touch-section { padding: 0; }
 .touch-section-call  .touch-section__header { color: var(--call-color); }

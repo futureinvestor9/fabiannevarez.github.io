@@ -21,17 +21,24 @@
 
   // Build the 4 touchpoint action buttons for a contact card
   DTD.buildTouchButtons = function (contactId) {
-    var info   = DTD.getCurrentQuarterInfo();
-    var status = DTD.getTouchStatus(contactId, info.quarter, info.year);
-    var html   = '';
+    var info    = DTD.getCurrentQuarterInfo();
+    var status  = DTD.getTouchStatus(contactId, info.quarter, info.year);
+    var contact = DTD.getContactById(contactId);
+    // The one touch this contact is scheduled for this week \u2014 highlight it so
+    // it's clear which button advances weekly progress (the others are
+    // available as catch-up touches but don't count toward this week).
+    var dueType = contact ? DTD.getTouchTypeThisWeek(contact) : null;
+    var html    = '';
     DTD.TOUCH_TYPES.forEach(function (t) {
       var done  = status[t];
+      var isDue = (t === dueType);
       var label = DTD.TOUCH_LABELS[t];
-      html += '<button class="touch-btn touch-btn-' + t + (done ? ' done' : '') + '"' +
+      html += '<button class="touch-btn touch-btn-' + t + (done ? ' done' : '') + (isDue ? ' due' : '') + '"' +
               '  data-action="open-touchpoint"' +
               '  data-contact-id="' + DTD.escHtml(contactId) + '"' +
-              '  data-type="' + t + '">' +
-              DTD.ICONS[t] + '<span>' + label + (done ? ' \u2713' : '') + '</span>' +
+              '  data-type="' + t + '"' +
+              (isDue ? ' aria-label="' + DTD.escHtml(label) + ', due this week"' : '') + '>' +
+              DTD.ICONS[t] + '<span>' + label + (isDue ? ' \u00b7 Due' : '') + (done ? ' \u2713' : '') + '</span>' +
               '</button>';
     });
     return html;
