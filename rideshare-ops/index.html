@@ -187,9 +187,9 @@
         <p class="delta"><span class="up">▼ 41%</span> less wear per trip on the car</p>
       </div>
       <div class="tile">
-        <p class="label">Hourly earnings</p>
-        <div class="value">$24.42<span class="unit"> → </span>$32.96</div>
-        <p class="delta"><span class="up">▲ 35%</span> before vs. after the system</p>
+        <p class="label">Trips completed (official Uber records)</p>
+        <div class="value">2,547</div>
+        <p class="delta">1,302 in 2025 (1099-K) + 1,245 in 2026 (Tax Summaries)</p>
       </div>
     </div>
   </section>
@@ -222,17 +222,16 @@
       <div class="phase">
         <p class="when">Phase 1 · Fall 2025 — the grind</p>
         <h3>High volume, gut-feel decisions</h3>
-        <p>198 hours online in a single month for $4,835.44 — $24.42/hr across 2,671 miles.
+        <p>198 hours online in a single month for $4,835.44 — about $24/hr across 2,671 miles (Uber’s monthly summary).
            Accept/reject calls were instinct, and every marginal trip added miles the car
            absorbed as fuel, maintenance, and depreciation.</p>
       </div>
       <div class="phase">
         <p class="when">Phase 2 · April 2026 — the build</p>
         <h3>Baseline, thresholds, tooling</h3>
-        <p>Logged and analyzed 75+ trips; validated a $32.96/hr gross baseline. Used AI tools
-           to draft accept/reject thresholds, then cross-checked every recommendation against
-           actual earnings before adopting it. Added Mystro + Gridwise (Apr 15) to run both
-           platforms as one operation.</p>
+        <p>Logged and analyzed 75+ trips to set decision thresholds. Used AI tools to draft
+           accept/reject rules, then cross-checked every recommendation against actual earnings
+           before adopting it. Added Mystro + Gridwise (Apr 15) to run both platforms as one operation.</p>
       </div>
       <div class="phase">
         <p class="when">Phase 3 · Apr–Jul 2026 — operating</p>
@@ -315,15 +314,12 @@
           trips — e.g. May 2026: 481 trips, 5,123 miles, $13,235.22 gross. Dollars-per-mile is computed
           directly from these official figures ($1.45 → $2.03 → $2.58 → $2.82). 2025 gross per the 1099-K was
           $24,024.49 across 1,302 trips.</li>
-      <li><strong>Pre-system benchmark:</strong> Uber's monthly driver recap (fall 2025):
-          $4,835.44 over 198 online hours ($24.42/hr) — used only for the hourly benchmark, since the tax
-          summaries report miles and trips but not online hours.</li>
-      <li><strong>Validated baseline:</strong> personal trip log of 75+ trips — $1,946.53 across
-          59.1 tracked online hours ($32.96/hr gross), built in Excel/Google Sheets with
-          Mystro and Gridwise operating data.</li>
-      <li><strong>Honest comparison note:</strong> the before and after hourly figures come from
-          different sources (platform recap vs. tracked trip log). Both are stated only to their
-          verified endpoints, and neither is extrapolated.</li>
+      <li><strong>Why hourly rate isn't a headline here:</strong> Uber's tax records report earnings,
+          miles, and trips — but not online hours — so $/hour can't be computed from an official source.
+          For context only: Uber's fall-2025 monthly summary implies ~$24/hr (Uber labels those figures
+          directional), and a self-tracked 59-hour sample after adopting the system logged ~$33/hr. Neither
+          is presented as a verified figure; the headline metrics ($/mile, take-home, trips) all trace to
+          official records.</li>
       <li><strong>Ride volume &amp; take-home rate:</strong> Lyft's weekly performance emails
           (completed-ride counts) and its May earnings breakdown ($215.01 passenger payments →
           $115.80 driver earnings, a 54% take-home rate after Lyft's 26% fee and 20% insurance/taxes/fees).</li>
@@ -487,68 +483,6 @@
         tb.appendChild(tr);
       });
     }
-  }
-
-  /* ---------- Before/after dumbbells (unused, retained) ---------- */
-  function drawDumbbell() {
-    var host = document.getElementById("chart-dumbbell");
-    if (!host) return;
-    host.innerHTML = "";
-    var rows = [
-      { label: "Hourly earnings", from: 24.42, to: 32.96, min: 20, max: 38,
-        fromTxt: "$24.42", toTxt: "$32.96", note: "+35%" },
-      { label: "Per-mile (Uber)", from: 1.45, to: 2.82, min: 1.2, max: 3.0,
-        fromTxt: "$1.45 (Mar)", toTxt: "$2.82 (Jun)", note: "+94%, official records" }
-    ];
-    var W = 900, rowH = 74, padL = 170, padR = 120, H = rowH * rows.length + 10;
-    var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, width: "100%", role: "img",
-      "aria-label": "Before and after rates" });
-    svg.style.minWidth = "640px";
-    var innerW = W - padL - padR;
-
-    rows.forEach(function (r, i) {
-      var cy = i * rowH + 44;
-      var xF = padL + ((r.from - r.min) / (r.max - r.min)) * innerW;
-      var xT = padL + ((r.to - r.min) / (r.max - r.min)) * innerW;
-
-      var lab = svgEl("text", { x: padL - 16, y: cy + 4, "text-anchor": "end",
-        "font-size": 13, "font-weight": 600, fill: tok("--ink") });
-      lab.textContent = r.label;
-      svg.appendChild(lab);
-
-      svg.appendChild(svgEl("line", { x1: padL, x2: padL + innerW, y1: cy, y2: cy,
-        stroke: tok("--grid"), "stroke-width": 1 }));
-      svg.appendChild(svgEl("line", { x1: xF, x2: xT, y1: cy, y2: cy,
-        stroke: tok("--accent"), "stroke-width": 2, "stroke-linecap": "round" }));
-
-      svg.appendChild(svgEl("circle", { cx: xF, cy: cy, r: 7, fill: tok("--accent-soft"),
-        stroke: tok("--surface"), "stroke-width": 2 }));
-      svg.appendChild(svgEl("circle", { cx: xT, cy: cy, r: 7, fill: tok("--accent"),
-        stroke: tok("--surface"), "stroke-width": 2 }));
-
-      var fl = svgEl("text", { x: xF, y: cy - 14, "text-anchor": "middle",
-        "font-size": 12, fill: tok("--ink-2") });
-      fl.style.fontVariantNumeric = "tabular-nums";
-      fl.textContent = r.fromTxt;
-      svg.appendChild(fl);
-
-      var tl = svgEl("text", { x: xT + 14, y: cy + 4, "text-anchor": "start",
-        "font-size": 13, "font-weight": 650, fill: tok("--ink") });
-      tl.style.fontVariantNumeric = "tabular-nums";
-      tl.textContent = r.toTxt;
-      svg.appendChild(tl);
-
-      var nt = svgEl("text", { x: xT + 14, y: cy + 20, "text-anchor": "start",
-        "font-size": 11.5, fill: tok("--good") });
-      nt.textContent = r.note;
-      svg.appendChild(nt);
-    });
-
-    var keyY = H - 6;
-    var key = svgEl("text", { x: padL, y: keyY, "font-size": 11.5, fill: tok("--muted") });
-    key.textContent = "◦ before (unfiltered)   ● after (with trip filter)";
-    svg.appendChild(key);
-    host.appendChild(svg);
   }
 
   /* ---------- Three-tier filter band ---------- */
